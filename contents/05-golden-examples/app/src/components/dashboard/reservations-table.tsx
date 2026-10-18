@@ -78,7 +78,7 @@ export function ReservationsTable({ rows, onArchive, onRestoreAll }: { rows: rea
   }
 
   return (
-    <div className="overflow-x-auto">
+    <div className="relative overflow-x-auto">
       <table className="w-full min-w-[40rem] border-collapse text-start">
         <caption className="sr-only">{t("dashTableTitle")}</caption>
         <thead>

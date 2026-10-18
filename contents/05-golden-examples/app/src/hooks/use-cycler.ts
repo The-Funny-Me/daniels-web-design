@@ -42,13 +42,21 @@ export interface CyclerView {
  */
 export function useCycler({ examples, mode, active, motionOk }: CyclerOptions): CyclerView {
   const [view, setView] = useState<CyclerView>({ text: "", caret: false });
+  const [visible, setVisible] = useState(true);
+
+  useEffect(() => {
+    const onVis = () => setVisible(document.visibilityState !== "hidden");
+    onVis();
+    document.addEventListener("visibilitychange", onVis);
+    return () => document.removeEventListener("visibilitychange", onVis);
+  }, []);
 
   useEffect(() => {
     if (!active || examples.length === 0) {
       setView({ text: "", caret: false });
       return;
     }
-    if (!motionOk) {
+    if (!motionOk || !visible) {
       const first = examples[0] ?? "";
       setView({ text: mode === "password" ? DOT.repeat(Array.from(first).length) : first, caret: false });
       return;
@@ -104,7 +112,7 @@ export function useCycler({ examples, mode, active, motionOk }: CyclerOptions): 
       cancelled = true;
       if (timer) clearTimeout(timer);
     };
-  }, [active, examples, mode, motionOk]);
+  }, [active, examples, mode, motionOk, visible]);
 
   return view;
 }

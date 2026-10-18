@@ -161,6 +161,23 @@ body.locked{overflow:hidden}
 .metal{block-size:56px;border-radius:var(--ds-radius-card);background:var(--ds-metal-gradient,var(--ds-surface-sunken));border:1px solid var(--ds-border-hairline);display:grid;place-items:center;font-size:var(--ds-text-xs)}
 footer{padding-block:var(--ds-section-md) var(--ds-section-lg);color:var(--ds-text-tertiary);text-align:center;font-size:var(--ds-text-sm)}
 
+/* ---- chapter 05: good design anatomy demos */
+.demo-box{background:var(--ds-surface-sunken);border:1px solid var(--ds-border-hairline);border-radius:var(--ds-radius-md);padding:16px;margin-block-start:16px;display:flex;flex-direction:column;gap:12px;position:relative}
+.menu-bar{display:flex;background:var(--ds-surface);border:1px solid var(--ds-border-hairline);border-radius:var(--ds-radius-sm);padding:4px;gap:4px;position:relative}
+.menu-item{padding:8px 12px;font-size:var(--ds-text-xs);border-radius:var(--ds-radius-xs);cursor:pointer;user-select:none;position:relative}
+.menu-item.active,.menu-item:hover{background:var(--ds-surface-raised);color:var(--ds-accent-text)}
+.submenu{position:absolute;inset-block-start:100%;inset-inline-start:0;margin-block-start:6px;background:var(--ds-surface-raised);border:1px solid var(--ds-border-strong);border-radius:var(--ds-radius-sm);padding:6px;inline-size:190px;display:none;box-shadow:var(--ds-shadow-md);z-index:var(--ds-z-sticky)}
+.submenu.open{display:block}
+.submenu-item{padding:6px 12px;font-size:var(--ds-text-xs);border-radius:var(--ds-radius-xs);cursor:pointer}
+.submenu-item:hover{background:var(--ds-accent-solid);color:var(--ds-on-accent)}
+.status-mono{font-family:var(--ds-font-mono);font-size:var(--ds-text-xs);color:var(--ds-text-secondary)}
+.play-circle{inline-size:44px;block-size:44px;border-radius:var(--ds-radius-pill);background:var(--ds-accent-solid);color:var(--ds-on-accent);display:inline-flex;align-items:center;justify-content:center}
+.skeleton-media{aspect-ratio:16/9;inline-size:100%;border-radius:var(--ds-radius-sm);background:var(--ds-surface);border:1px solid var(--ds-border-hairline);display:grid;place-items:center;font-size:var(--ds-text-xs);color:var(--ds-text-tertiary)}
+.btn-lock-wrap{position:relative;display:inline-flex;align-items:center;justify-content:center}
+.btn-lock-wrap .lbl-lock.loading{opacity:0}
+.btn-lock-wrap .spin-lock{position:absolute;inset:0;display:none;align-items:center;justify-content:center}
+.btn-lock-wrap .spin-lock.loading{display:flex}
+
 /* ---- reduced motion: the same collapse the rules require (also forceable from the nav) */
 @media (prefers-reduced-motion:reduce){
   html{scroll-behavior:auto}
@@ -259,6 +276,76 @@ html[data-motion="reduced"] :is(.btn,.chipbtn):is(:hover,:active){transform:none
   </section>
 
   <hr class="hair shimmer rv">
+
+  <section class="chapter">
+    <div class="ghostnum" aria-hidden="true">05</div>
+    <span class="label rv" data-t="c5l">Chapter 05 · Good Design Anatomy</span>
+    <h2 class="rv" data-t="c5h">Cursor dynamics, form physics &amp; state polish</h2>
+    <p class="lede rv" style="margin-block-end:32px" data-t="c5p">Tactile engineering rules that separate high-craft applications from fragile templates.</p>
+    <div class="grid3">
+      <article class="card rv" style="overflow:visible;z-index:20">
+        <span class="label">01 · Navigation &amp; Cursor Dynamics</span>
+        <h3>Safe Triangle &amp; Hover Intent</h3>
+        <p>Submenu aiming buffer prevents diagonal collapse; hover popovers wait 150ms for intent; full-card hit targets obey Fitts’s Law.</p>
+        <div class="demo-box">
+          <div class="menu-bar">
+            <div class="menu-item active" id="menuProducts">
+              Suites ▾
+              <div class="submenu" id="productsSubmenu">
+                <div class="submenu-item">Penthouse 04</div>
+                <div class="submenu-item">Garden Pavilion</div>
+                <div class="submenu-item">Courtyard Loft</div>
+              </div>
+            </div>
+            <div class="menu-item" data-neighbor="Dining">Dining</div>
+            <div class="menu-item" data-neighbor="Cellar">Cellar</div>
+          </div>
+          <div id="menuStatus" class="status-mono">Hover "Suites" then glide diagonally.</div>
+          <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap">
+            <button class="chipbtn" id="intentBtn" type="button">Hover 150ms Intent</button>
+            <span id="popoverBadge" class="chip" style="display:none;color:var(--ds-accent-text);background:var(--ds-surface-raised);border-color:var(--ds-accent-ui)">Intent confirmed</span>
+          </div>
+        </div>
+      </article>
+
+      <article class="card rv">
+        <span class="label">02 · Search, Input &amp; Form Physics</span>
+        <h3>Debounce, Cache &amp; Dimension Lock</h3>
+        <p>250ms debounced queries with instant backspace cache, locked button width/height during loading, and tailored <code>inputmode</code>.</p>
+        <div class="demo-box">
+          <input id="searchInput" type="search" autocomplete="off" placeholder="Search cache ('suite', 'wine')…" style="padding:10px 14px;border-radius:var(--ds-radius-pill);border:1px solid var(--ds-border-control);background:var(--ds-surface)">
+          <div id="searchResult" class="status-mono">Status: Idle</div>
+          <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap">
+            <input type="text" inputmode="numeric" autocomplete="one-time-code" placeholder="OTP (numeric)" style="inline-size:130px;padding:8px 12px;border-radius:var(--ds-radius-pill);border:1px solid var(--ds-border-control);background:var(--ds-surface);font-size:var(--ds-text-xs)">
+            <button class="btn acc" id="lockBtn" type="button" style="padding:10px 20px;min-block-size:40px">
+              <span class="btn-lock-wrap">
+                <span class="lbl-lock" id="lockBtnText">Confirm stay</span>
+                <span class="spin-lock" id="lockBtnSpin" aria-hidden="true">•••</span>
+              </span>
+            </button>
+          </div>
+        </div>
+      </article>
+
+      <article class="card rv">
+        <span class="label">03 · State, Motion &amp; Visual Polish</span>
+        <h3>Optimistic Rollback &amp; Optical Alignment</h3>
+        <p>Optimistic toggles with automatic rollback toast, +2px optical play-icon centering, and zero-CLS <code>aspect-ratio</code> reserve areas.</p>
+        <div class="demo-box">
+          <div style="display:flex;align-items:center;justify-content:space-between;gap:12px">
+            <button class="chipbtn" id="optBtn" type="button">♡ <span id="optLabel">Save Suite</span></button>
+            <div style="display:flex;align-items:center;gap:12px">
+              <span class="play-circle" title="Math center"><span style="font-size:12px">▶</span></span>
+              <span class="play-circle" title="Optical +2px inline-start"><span style="font-size:12px;transform:translateX(calc(var(--ds-dir) * 2px))">▶</span></span>
+            </div>
+          </div>
+          <div class="skeleton-media">16:9 Reserved Aspect-Ratio Slot (Zero CLS)</div>
+        </div>
+      </article>
+    </div>
+  </section>
+
+  <hr class="hair shimmer rv">
   <div class="metal rv" id="metal">metal gradient</div>
   <section class="chapter" style="padding-block-end:0"><p class="label rv" style="margin-block-end:16px" data-t="rolesL">Roles in the current pack and mode</p><div class="chips2 rv" id="sw"></div></section>
   <footer class="rv" data-t="foot">Every color, radius, shadow and duration on this page is a token.</footer>
@@ -289,6 +376,7 @@ en:{loading:'Still on it…',eyebrow:'Suite 01 · Quiet luxury',title:'Room to <
  c3l:'Chapter 03 · Accent',c3h:'The more it matters, the more it glows',c3p:'Emphasis follows importance, never mood. Five rungs, one budget.',
  l0n:'Level 0 · Plain',l0t:'Quiet',l0p:'No effect. Most of the page lives here.',l1n:'Level 1 · Notable',l1t:'Hairline',l1p:'An accent edge, and light that follows your cursor.',l2n:'Level 2 · Important',l2t:'Featured',l2p:'A slow radial light, breathing behind it.',l3n:'Level 3 · Key',l3t:'Needs you',l3p:'A faint shiver, three cycles, only when it has something to say.',l3b:'Nudge',l4n:'Level 4 · Hero',l4t:'Earned',l4p:'Particles, once, for the one moment that deserves them.',l4b:'Celebrate',
  c4l:'Chapter 04 · Surfaces',c4h:'Tint below, glass above',c4p:'Cards rest on tint and a hairline. Only what floats over them turns to glass.',s1t:'Surface',s1p:'Hairline edge, soft tinted shadow, never gray-black.',s2t:'Raised',s2p:'One step up. Lighter in dark mode.',s2b:'Remove',s3t:'Overlay',s3p:'Open a glass sheet: the page recedes, only it stays crisp.',s3b:'Open sheet',
+ c5l:'Chapter 05 · Good Design Anatomy',c5h:'Cursor dynamics, form physics & state polish',c5p:'Tactile engineering rules that separate high-craft applications from fragile templates.',
  rolesL:'Roles in the current pack and mode',foot:'Every color, radius, shadow and duration on this page is a token.',
  sh1:'Reset access',sh2:'Forgot your password?',sh3:'We will send a link. This sheet rose on a critically damped spring, so it never overshoots.',sh4:'Send link',sh5:'Close',
  removed:'Card removed',undo:'Undo',nudged:'Nothing urgent. Just a demonstration.',
@@ -298,6 +386,7 @@ he:{loading:'עוד רגע…',eyebrow:'סוויטה 01 · יוקרה שקטה',
  c3l:'פרק 03 · הדגשה',c3h:'ככל שזה חשוב יותר, כך זה זורח יותר',c3p:'ההדגשה נקבעת לפי חשיבות, לא לפי מצב רוח. חמש דרגות, תקציב אחד.',
  l0n:'דרגה 0 · רגיל',l0t:'שקט',l0p:'בלי אפקט. רוב העמוד חי כאן.',l1n:'דרגה 1 · בולט',l1t:'קו שיער',l1p:'שפה בגוון ההדגשה, ואור שעוקב אחרי הסמן.',l2n:'דרגה 2 · חשוב',l2t:'מומלץ',l2p:'אור רדיאלי איטי שנושם מאחוריו.',l3n:'דרגה 3 · מפתח',l3t:'צריך אתכם',l3p:'רעד קל, שלושה מחזורים, רק כשיש לו מה לומר.',l3b:'דחיפה',l4n:'דרגה 4 · גיבור',l4t:'הרווחתם',l4p:'חלקיקים, פעם אחת, לרגע האחד שמגיע לו.',l4b:'חגגו',
  c4l:'פרק 04 · משטחים',c4h:'גוון למטה, זכוכית למעלה',c4p:'כרטיסים נשענים על גוון וקו שיער. רק מה שמרחף מעליהם הופך לזכוכית.',s1t:'משטח',s1p:'קצה דק, צל עדין בגוון, אף פעם לא אפור-שחור.',s2t:'מורם',s2p:'שלב אחד למעלה. בהיר יותר במצב כהה.',s2b:'הסרה',s3t:'שכבת על',s3p:'פתחו דף זכוכית: העמוד נסוג, רק הוא נשאר חד.',s3b:'פתיחת דף',
+ c5l:'פרק 05 · אנטומיה של עיצוב טוב',c5h:'דינמיקת סמן, פיזיקת טפסים וליטוש מצבים',c5p:'כללי הנדסה מוחשיים שמבדילים בין יישומים מוקפדים לתבניות שבריריות.',
  rolesL:'התפקידים בחבילה ובמצב הנוכחיים',foot:'כל צבע, רדיוס, צל ומשך בעמוד הזה הוא טוקן.',
  sh1:'איפוס גישה',sh2:'שכחתם סיסמה?',sh3:'נשלח קישור. הדף הזה עלה על קפיץ מרוסן קריטית, ולכן הוא אף פעם לא חורג.',sh4:'שליחת קישור',sh5:'סגירה',
  removed:'הכרטיס הוסר',undo:'ביטול',nudged:'שום דבר דחוף. רק הדגמה.',
@@ -443,6 +532,61 @@ const nums=$$('.ghostnum');
   }else nums.forEach(n=>n.style.transform='');
   requestAnimationFrame(tick);
 })();
+
+/* ---------------------------------------------------------- chapter 05: good design anatomy interactions */
+let menuCloseTimer=null;
+const menuProd=$('#menuProducts'),prodSub=$('#productsSubmenu'),menuStat=$('#menuStatus');
+if(menuProd&&prodSub){
+  menuProd.addEventListener('pointerenter',()=>{clearTimeout(menuCloseTimer);prodSub.classList.add('open');menuStat.textContent='Submenu active (Safe Triangle buffer armed)'});
+  menuProd.addEventListener('pointerleave',()=>{menuCloseTimer=setTimeout(()=>{prodSub.classList.remove('open');menuStat.textContent='Submenu closed'},260)});
+  $$('[data-neighbor]').forEach(el=>el.addEventListener('pointerenter',()=>{if(prodSub.classList.contains('open'))menuStat.textContent=`Safe Triangle buffered diagonal sweep over "${el.dataset.neighbor}"`}));
+}
+let hoverIntentTimer=null;
+const intentBtn=$('#intentBtn'),popBadge=$('#popoverBadge');
+if(intentBtn&&popBadge){
+  intentBtn.addEventListener('pointerenter',()=>{hoverIntentTimer=setTimeout(()=>{popBadge.style.display='inline-block'},150)});
+  intentBtn.addEventListener('pointerleave',()=>{clearTimeout(hoverIntentTimer);popBadge.style.display='none'});
+}
+const searchIn=$('#searchInput'),searchRes=$('#searchResult');
+const searchCache={suite:'Penthouse 04, Garden Pavilion',wine:'1998 Cellar Reserve, Brut Nature'};
+let searchDebounce=null,lastQuery='';
+if(searchIn&&searchRes){
+  searchIn.addEventListener('input',e=>{
+    const q=e.target.value.trim().toLowerCase();
+    const isBackspace=q.length<lastQuery.length;
+    lastQuery=q;
+    clearTimeout(searchDebounce);
+    if(!q){searchRes.textContent='Status: Idle';return;}
+    if(searchCache[q]){searchRes.textContent=`[${isBackspace?'BACKSPACE ':''}CACHE HIT]: ${searchCache[q]}`;return;}
+    searchRes.textContent='Status: Typing… (Debouncing 250ms)';
+    searchDebounce=setTimeout(()=>{searchCache[q]=`Matched "${q}"`;searchRes.textContent=`[NETWORK 250ms]: ${searchCache[q]}`},250);
+  });
+}
+const lockBtn=$('#lockBtn'),lockTxt=$('#lockBtnText'),lockSpin=$('#lockBtnSpin');
+let btnLoading=false;
+if(lockBtn){
+  lockBtn.addEventListener('click',()=>{
+    btnLoading=!btnLoading;
+    lockBtn.setAttribute('aria-busy',String(btnLoading));
+    lockTxt.classList.toggle('loading',btnLoading);
+    lockSpin.classList.toggle('loading',btnLoading);
+  });
+}
+const optBtn=$('#optBtn'),optLbl=$('#optLabel');
+let optSaved=false;
+if(optBtn){
+  optBtn.addEventListener('click',()=>{
+    optSaved=!optSaved;
+    optLbl.textContent=optSaved?'Saved (Syncing…)':'Save Suite';
+    if(optSaved){
+      setTimeout(()=>{
+        optSaved=false;
+        optLbl.textContent='Save Suite';
+        toast('Network sync failed — state rolled back');
+      },1400);
+    }
+  });
+}
 
 /* ---------------------------------------------------------- controls */
 const roles=['canvas','surface','surface-raised','surface-sunken','text-primary','text-secondary','text-tertiary','accent','accent-ui','accent-text','accent-solid','on-accent','secondary','secondary-ui','secondary-text','secondary-solid','on-secondary'];

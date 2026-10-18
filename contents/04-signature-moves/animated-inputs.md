@@ -39,37 +39,40 @@ The number of cycled examples depends on how much variety teaches the format.
 
 Rule of thumb: **the more open-ended the field, the more examples**; fixed-format fields get few. Never more than 7 in a cycle. Examples are content, so they come from the `t()` dictionary per locale, not hard-coded.
 
-## Timing
+## Timing (`typing` in `src/hooks/use-cycler.ts`)
 
-| Phase | Duration |
-|---|---|
-| Typing | 55ms per character (±15ms jitter for a human feel; no jitter for passwords) |
-| Hold (fully typed) | 1600ms |
-| Erase | 28ms per character (backspace is faster than typing) |
-| Gap before next | 300ms |
-| Caret | a soft 1px `text-tertiary` bar blinking at 1.06s; hidden when not animating |
-| Placeholder color | `text-tertiary` (4.5:1 guaranteed) |
+| Phase | Token | Duration |
+|---|---|---|
+| Initial delay before first character | `startDelay` | 600ms |
+| Typing | `type` ± `jitter` | 55ms per character (±15ms jitter) |
+| Hold (text mode, fully typed) | `hold` | 1600ms |
+| Erase (text mode) | `erase` | 28ms per character |
+| Gap before next example | `gap` | 300ms |
+| Password readable pause before masking | `maskStart` | 600ms |
+| Password masking (char → `•`) | `mask` | 45ms per character |
+| Password hold (all dots) | `maskedHold` | 900ms |
+| Password unmasking (dots removed in reverse) | `unmask` | 30ms per character |
+| Caret | `.bg-brand-ui` | 1px bar blinking (`blink 1s steps(1) infinite`); hidden when not animating or under reduced motion |
+| Placeholder color | `text-ink-3` | `--ds-text-tertiary` (4.5:1 guaranteed) |
 
 ## Password masking demo
 
-Sequence for one example, e.g. `Velvet#2026!`:
+Sequence for one example in `useCycler` (`mode="password"`), e.g. `Velvet#2026!`:
 
-1. **typing**: characters appear as readable text.
-2. **holding**: 1000ms readable.
-3. **masking**: characters convert to `•` one by one **in reading direction**, 45ms each. LTR: first → last (left to right). RTL: first → last (right to left). The conversion sweeps along the text's own direction.
-4. **maskedHold**: 900ms of dots.
-5. **unmasking** ("dotted out"): dots disappear one by one, **in reverse of the masking order**, 30ms each, leaving empty.
-6. next example begins typing.
+1. **typing**: characters appear as readable text (`55ms ± 15ms` per character).
+2. **maskStart**: 600ms pause while fully readable.
+3. **masking**: characters convert to `•` one by one **in reading direction** (`DOT.repeat(dots) + chars.slice(dots, n).join("")`), `45ms` each.
+4. **maskedHold**: 900ms of full dots.
+5. **unmasking** ("dotted out"): dots are removed in reverse order (`n - 1` down to `0`), `30ms` each, leaving empty.
+6. **gap**: 300ms before the next example begins typing.
 
-The real password field (when the user focuses and types) shows the browser's native dots; the show/hide toggle (`aria-pressed`) works as normal.
+The real password field (when the user focuses and types) shows the browser's native dots; the show/hide toggle (`aria-pressed`) overrides `type` between `"password"` and `"text"`.
 
 ## Direction awareness
 
-- Input `dir` follows content: `dir="auto"` on text fields; email/URL/password inputs are always `dir="ltr"` with `text-align: start` so the example sits at the inline-start edge of the field.
-- A Hebrew example in a Hebrew UI types right-to-left from the inline-start (right) edge; the caret sits at the trailing (left) end of the typed text.
-- Mixed content (a Hebrew name containing digits) wraps numeric runs with `<bdi>`.
-- **Masking follows the logical order of the string.** A Hebrew example in an RTL page masks from the right edge to the left; a Latin example in the same RTL page still sits left-to-right and would visibly mask left-to-right. So RTL demos must use an example written in the page's script (the preview uses Hebrew password examples for exactly this reason).
-- Dots use `•` (U+2022) in both directions; spacing is monospaced to avoid layout jitter (`font-variant-numeric: tabular-nums` for digits; dots rendered in `--ds-font-mono`).
+- Password and text inputs follow the page direction (`dir` on `<html>`), and the `aria-hidden` overlay sits on `start-6 end-6` so the input and overlay directions always match.
+- A Hebrew example in a Hebrew UI (`dir="rtl"`) types right-to-left from the inline-start (right) edge; the caret sits at the trailing (left) end of the typed text.
+- RTL demos use Hebrew password examples (`exPassword` in `src/lib/i18n/auth.ts`) so masking sweeps right-to-left naturally.
 
 ## Accessibility
 

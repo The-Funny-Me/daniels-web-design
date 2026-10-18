@@ -67,8 +67,14 @@ export function Button({ className, variant, size, asChild, glint, loading, disa
       type={props.type ?? "button"}
       {...props}
     >
-      {loading && <Spinner />}
-      {children}
+      {loading && (
+        <span className="pointer-events-none absolute inset-0 inline-flex items-center justify-center">
+          <Spinner />
+        </span>
+      )}
+      <span className={cn("inline-flex items-center justify-center gap-2", loading && "opacity-0")}>
+        {children}
+      </span>
     </button>
   );
 }

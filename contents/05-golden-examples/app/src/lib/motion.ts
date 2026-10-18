@@ -28,9 +28,9 @@ export const ease = {
 
 /** Critically damped or over (damping >= 2*sqrt(stiffness*mass)): overlays never overshoot. Verified by the token build. */
 export const springs = {
-  overlay: { type: "spring", ...core.motion.spring.overlay },
-  ui: { type: "spring", ...core.motion.spring.ui },
-  hero: { type: "spring", ...core.motion.spring.hero },
+  overlay: { type: "spring", ...core.motion.spring.overlay, restDelta: 0.5, restSpeed: 2 },
+  ui: { type: "spring", ...core.motion.spring.ui, restDelta: 0.5, restSpeed: 2 },
+  hero: { type: "spring", ...core.motion.spring.hero, restDelta: 0.5, restSpeed: 2 },
 } as const;
 
 export const loadingConfig = core.loading;

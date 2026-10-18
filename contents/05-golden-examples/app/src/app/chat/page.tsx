@@ -21,7 +21,7 @@ type Item = Msg | { id: string; sep: string };
 type StickMode = "none" | "instant" | "smooth";
 
 export default function ChatPage() {
-  const { t, tl, lang, locale, motionOk } = useDesign();
+  const { t, tl, lang, locale, motionOk, ready } = useDesign();
   const chat = useChatScroll(motionOk);
   const { scrollerRef, pull } = chat;
   const [local, setLocal] = useState<Msg[]>([]);
@@ -32,25 +32,30 @@ export default function ChatPage() {
   const inputId = useId();
   const panelId = useId();
 
-  // ~200 generated messages, alternating, rebuilt per language
+  // ~200 generated messages, alternating, rebuilt per language.
+  // Separator dates are computed only after client mount (`ready`) so SSR and hydration always match.
   const history = useMemo<Item[]>(() => {
     const a = tl("chatAssistantLines");
     const u = tl("chatUserLines");
-    const day = new Intl.DateTimeFormat(locale, { weekday: "long", month: "short", day: "numeric" });
+    const day = ready ? new Intl.DateTimeFormat(locale, { weekday: "long", month: "short", day: "numeric" }) : null;
     const items: Item[] = [];
     for (let i = 0; i < HISTORY; i++) {
       const sepAt = SEPARATORS.indexOf(i);
       if (sepAt >= 0) {
-        const d = new Date();
-        d.setDate(d.getDate() - (SEPARATORS.length - sepAt) * 2);
-        items.push({ id: `sep${i}`, sep: day.format(d) });
+        let sep = "\u00A0";
+        if (day) {
+          const d = new Date();
+          d.setDate(d.getDate() - (SEPARATORS.length - sepAt) * 2);
+          sep = day.format(d);
+        }
+        items.push({ id: `sep${i}`, sep });
       }
       const assistant = i % 2 === 0;
       const n = Math.floor(i / 2);
       items.push({ id: `h${i}`, role: assistant ? "assistant" : "user", text: (assistant ? a[(n * 3) % a.length] : u[(n * 5) % u.length]) ?? "" });
     }
     return items;
-  }, [tl, locale]);
+  }, [tl, locale, ready]);
 
   // start at the newest message
   useLayoutEffect(() => {
@@ -69,6 +74,15 @@ export default function ChatPage() {
   useEffect(() => {
     if (chat.atEnd) setUnread(0);
   }, [chat.atEnd]);
+
+  useEffect(() => {
+    if (!chat.open) return;
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") chat.setOpen(false);
+    };
+    document.addEventListener("keydown", onKey);
+    return () => document.removeEventListener("keydown", onKey);
+  }, [chat]);
 
   useEffect(() => {
     const list = timers.current;
@@ -164,13 +178,16 @@ export default function ChatPage() {
         {/* options live beneath the messages; pulling past the end slides the messages up to reveal them */}
         <motion.div
           id={panelId}
-          role="group"
+          role="region"
           aria-label={t("chatOptionsTitle")}
           aria-hidden={!chat.open}
           inert={!chat.open}
           style={{ opacity: motionOk ? panelOpacity : chat.open ? 1 : 0, blockSize: scrollSpec.panelHeight }}
           transition={fade}
-          className="absolute inset-x-0 bottom-0 z-(--ds-z-sticky) grid content-center gap-2 px-4"
+          className={cn(
+            " absolute inset-x-0 bottom-0 z-(--ds-z-sticky) grid content-center gap-2 px-4",
+            !chat.open && "pointer-events-none",
+          )}
         >
           <Eyebrow>{t("chatOptionsTitle")}</Eyebrow>
           <ul className="flex flex-wrap gap-2">
@@ -187,6 +204,9 @@ export default function ChatPage() {
         <div
           ref={scrollerRef}
           {...chat.handlers}
+          onClick={() => {
+            if (chat.open) chat.setOpen(false);
+          }}
           tabIndex={-1}
           className="absolute inset-0 overflow-y-auto overscroll-contain"
           style={{ overflowAnchor: "none" }}
@@ -196,7 +216,7 @@ export default function ChatPage() {
             aria-relevant="additions"
             aria-label={t("chatTitle")}
             style={{ y: motionOk ? y : 0 }}
-            className="grid gap-3 px-4 pb-6 pt-4"
+            className={cn("grid gap-3 px-4 pt-4", !motionOk && chat.open ? "pb-28" : "pb-6")}
           >
             {[...history, ...local].map((it) =>
               "sep" in it ? (

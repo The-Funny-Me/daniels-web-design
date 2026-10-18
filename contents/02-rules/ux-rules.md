@@ -21,20 +21,23 @@
 
 ## Forms and inputs
 - **X14** Labels are always visible and persistent. The animated example placeholders (see `04-signature-moves/animated-inputs.md`) never replace a label.
-- **X15** Use the right `type`, `inputmode` and `autocomplete` on every field. Passwords support show/hide.
-- **X16** Submit buttons show a loading state in place and disable duplicate submission; preserve input on failure.
+- **X15 (Native Keyboard Tailoring)** Explicitly set `inputmode` (`inputmode="numeric"`, `inputmode="decimal"`, `inputmode="email"`) and `type` (`type="email"`, etc.) alongside appropriate `autocomplete` tags (`email`, `name`, `current-password`, `new-password`) on every field to summon the right touch keyboard and autofill triggers without browser layout shifts. Passwords support show/hide.
+- **X16 (Button Dimension Lock on Loading States)** Submit buttons show a loading state in place, disable duplicate submission (`disabled` + `aria-busy="true"`), and preserve their exact `width` and `height` (keeping label text in layout flow at `opacity-0` while centering the spinner overlay) so buttons never shrink or warp layout flow. Preserve user input on failure.
+- **X16a (Debounced Intent vs. Raw Input Queries)** Delay autocomplete or search network requests until a brief typing pause occurs (200–300ms debounce), and pull instantly from local cache on backspace, rather than firing unthrottled requests that cause flashing dropdown results and race conditions.
 
-## Overlays and focus
-- **X17** Modal and sheet: focus trap, `Esc` to close, return focus to the trigger, scroll lock on the page, scrim in focus mode (see foundations §6). Entrance uses the `overlay` spring, with no overshoot.
-- **X18** Popovers close on outside click and `Esc`. One modal at a time; no modal opens another modal.
+## Overlays, navigation and cursor dynamics
+- **X17 (Focus Trap & Focus Restoration)** Modal and sheet: trap keyboard `Tab` focus within active modal dialogs, `Esc` to close, explicitly restore active focus to the triggering element once the modal closes, scroll lock on the page, scrim in focus mode (see foundations §6). Entrance uses the `overlay` spring, with no overshoot.
+- **X18** Popovers close on outside click and `Esc`. One modal at a time; no modal opens another modal (close the first before opening the next).
+- **X18a (Submenu Aiming / Safe Triangle Buffer)** In nested dropdown menus, predict cursor trajectory toward submenus using dynamic triangular buffers (or pointer-tracking vector math) so submenus do not collapse prematurely when moving diagonally across neighboring items.
+- **X18b (Hover Intent Delay)** Delay the trigger of heavy popovers or tooltips by 100–200ms to avoid firing unwanted popovers when a user rapidly sweeps the cursor across the screen.
 
-## Navigation and feedback
-- **X19** Every interaction gets feedback within 120ms (press state), even when the result takes longer.
-- **X20** Toasts: max one visible at a time, queued; auto-dismiss after 6s except undo (8s) and errors (manual dismiss).
+## State management and feedback
+- **X19 (Optimistic UI Updates with Graceful Rollback)** Every interaction gets feedback within 120ms (press state). State toggles (archiving, bookmarking, liking, favoriting) update immediately in the UI before the network payload resolves, paired with a silent background request and automatic state reversal with a subtle toast notification if the API call fails or Undo is clicked.
+- **X20** Toasts: max three visible, bottom-`start` aligned; auto-dismiss after 6s except undo (8s with draining hairline) and errors (manual dismiss).
 - **X21** Empty states explain what belongs here and offer the next action; they are designed, not blank.
 
 ## Scroll (cross-reference)
-- **X22** Smooth/inertial scroll only on marketing surfaces and main focus elements; native elsewhere. Chat uses native scroll up and the bottom snap-and-reveal pattern. Details in `04-signature-moves/scroll-and-focus.md`. Any scroll-hijack must have a keyboard and button alternative and must never trap the user.
+- **X22 (Scroll Position Memory)** Preserve precise scroll coordinates when navigating back from a detail view to a feed, and never yank a user who has scrolled up in a live stream. Smooth/inertial scroll only on marketing surfaces and main focus elements; native elsewhere. Chat uses native scroll up and the bottom snap-and-reveal pattern. Details in `04-signature-moves/scroll-and-focus.md`. Any scroll-hijack must have a keyboard and button alternative and must never trap the user.
 
 ## Accessibility baseline
 - **X23** Semantic landmarks, one `h1`, logical heading order. Every interactive element is keyboard-reachable in visual order (which flips in RTL).

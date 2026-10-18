@@ -28,7 +28,7 @@ interface LineChartProps {
 }
 
 const HEIGHT = 280;
-const PAD = { top: 24, right: 48, bottom: 32, left: 40 };
+const PAD = { top: 24, right: 48, bottom: 32, left: 40 }; // ds-allow-physical
 
 const compact = (n: number) => (n >= 1000 ? `${n / 1000}K` : String(n));
 
@@ -127,7 +127,7 @@ export function LineChart({ series, tick, heading, announce, describe, className
         onPointerLeave={() => !focused && setActive(null)}
         className="relative min-w-0 touch-pan-y rounded-sm"
       >
-        <svg width={width} height={HEIGHT} viewBox={`0 0 ${width} ${HEIGHT}`} className="block overflow-visible" aria-hidden>
+        <svg width={width} height={HEIGHT} viewBox={`0 0 ${width} ${HEIGHT}`} className="block w-full max-w-full overflow-visible" aria-hidden>
           {ticks.map((t) => (
             <g key={t}>
               <line x1={PAD.left} x2={width - PAD.right} y1={y(t)} y2={y(t)} className="stroke-hairline" strokeWidth={1} />

@@ -24,6 +24,20 @@ for (const [pack, theme, dir] of configs) {
   p.on('pageerror', (e) => problems.push(`[pageerror ${tag}] ${e.message}`));
   await p.goto(`${base}${page}?pack=${pack}&theme=${theme}&dir=${dir}${process.env.MOTION ? `&motion=${process.env.MOTION}` : ''}`, { waitUntil: 'load' });
   await p.waitForTimeout(Number(process.env.WAIT || 2600));
+  if (full === 'full') {
+    await p.evaluate(async () => {
+      const h = document.documentElement.scrollHeight;
+      const vh = window.innerHeight;
+      if (h > vh * 1.2) {
+        for (let y = vh * 0.7; y <= h; y += vh * 0.7) {
+          window.scrollTo(0, y);
+          await new Promise((r) => setTimeout(r, 80));
+        }
+        window.scrollTo(0, 0);
+      }
+    });
+    await p.waitForTimeout(900);
+  }
   const name = `${page.replace(/\//g, '') || 'home'}-${pack}-${theme}-${dir}`;
   await p.screenshot({ path: `${out}/${name}.png`, fullPage: full === 'full' });
   const [sw, cw] = await p.evaluate(() => [document.documentElement.scrollWidth, document.documentElement.clientWidth]);
