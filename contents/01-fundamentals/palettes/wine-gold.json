@@ -1,0 +1,13 @@
+{
+  "id": "wine-gold",
+  "name": "Wine & Gold-Bronze",
+  "description": "Dramatic sibling of the default: deeper wine-velvet surfaces, truer and more saturated gold-bronze, darker overall. Use for evening, hospitality, premium-product moments.",
+  "canvas": { "light": "#F8F2EE", "dark": "#150810" },
+  "accent": "#B07D2E",
+  "secondary": "#7A1630",
+  "metal": {
+    "name": "gold-bronze",
+    "light": ["#F0DCA8", "#D4A94E", "#B07D2E", "#E8C878"],
+    "dark": ["#F6E3B0", "#E0B95E", "#BC8A38", "#F0D088"]
+  }
+}

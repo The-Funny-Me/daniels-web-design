@@ -1,0 +1,91 @@
+const en = {
+  chatTitle: "Concierge",
+  chatOnline: "Online",
+  chatIncoming: "Incoming",
+  chatMessage: "Message",
+  chatSend: "Send",
+  chatOptions: "Options",
+  chatOptionsTitle: "Suggestions",
+  chatJump: "Latest",
+  chatUnread: "{n} new",
+  chatOptionsAnnounce: "{n} suggestions available",
+  chatOpt1: "Summarize this chat",
+  chatOpt2: "Book the corner suite",
+  chatOpt3: "Send a thank-you",
+  chatOpt4: "Show late checkout",
+  chatReply: "Of course. The corner suite is free from Friday. I have held it for you and added a late checkout, so nothing rushes the morning.",
+  chatIncomingMsg: "A small update: your table for two is confirmed for eight o'clock.",
+  chatHint: "Scroll up through the history, come back down, then pull a little past the end.",
+  chatStreaming: "Writing",
+} as const;
+
+const he: Record<keyof typeof en, string> = {
+  chatTitle: "קונסיירז׳",
+  chatOnline: "מחובר",
+  chatIncoming: "הודעה נכנסת",
+  chatMessage: "הודעה",
+  chatSend: "שליחה",
+  chatOptions: "אפשרויות",
+  chatOptionsTitle: "הצעות",
+  chatJump: "לאחרונה",
+  chatUnread: "{n} חדשות",
+  chatOptionsAnnounce: "{n} הצעות זמינות",
+  chatOpt1: "סכמו את השיחה",
+  chatOpt2: "הזמינו את סוויטת הפינה",
+  chatOpt3: "שלחו תודה",
+  chatOpt4: "הציגו יציאה מאוחרת",
+  chatReply: "בשמחה. סוויטת הפינה פנויה מיום שישי. שמרתי אותה בשבילכם והוספתי יציאה מאוחרת, כך שהבוקר לא ידחק בכם.",
+  chatIncomingMsg: "עדכון קטן: השולחן לשניים אושר לשעה שמונה.",
+  chatHint: "גללו למעלה בהיסטוריה, חזרו למטה, ואז משכו מעט מעבר לסוף.",
+  chatStreaming: "כותב",
+};
+
+const enL = {
+  chatPrompts: ["Ask about tonight's table", "Request a late checkout", "Plan a quiet weekend", "Find a gift for the suite"],
+  chatAssistantLines: [
+    "Good evening. How can I make tonight easier?",
+    "I can arrange a quiet table, a late checkout, or flowers for the room.",
+    "Your suite faces the garden. The mornings there are very still.",
+    "I'll note that for the staff, and nothing else will be needed from you.",
+    "Breakfast is served until eleven, in the room or in the courtyard.",
+    "The spa has a free hour at six. Shall I hold it?",
+    "Done. It is on your itinerary, with a reminder an hour before.",
+    "If anything changes, I will tell you first.",
+  ],
+  chatUserLines: [
+    "Could we have somewhere quiet for dinner?",
+    "Yes, please hold it.",
+    "That sounds perfect.",
+    "Is there a late checkout on Sunday?",
+    "Thank you, that's very kind.",
+    "Let's do six o'clock.",
+    "Can you add flowers to the room?",
+    "Lovely. Nothing else for now.",
+  ],
+} as const;
+const heL: Record<keyof typeof enL, readonly string[]> = {
+  chatPrompts: ["שאלו על השולחן להערב", "בקשו יציאה מאוחרת", "תכננו סוף שבוע שקט", "מצאו מתנה לסוויטה"],
+  chatAssistantLines: [
+    "ערב טוב. איך אפשר להקל עליכם הערב?",
+    "אני יכול לארגן שולחן שקט, יציאה מאוחרת או פרחים לחדר.",
+    "הסוויטה שלכם פונה לגן. הבקרים שם שקטים מאוד.",
+    "אעביר את זה לצוות, ולא יידרש מכם דבר נוסף.",
+    "ארוחת הבוקר מוגשת עד אחת עשרה, בחדר או בחצר.",
+    "בספא יש שעה פנויה בשש. לשמור לכם אותה?",
+    "בוצע. זה ביומן שלכם, עם תזכורת שעה לפני.",
+    "אם משהו ישתנה, אעדכן אתכם ראשונים.",
+  ],
+  chatUserLines: [
+    "אפשר מקום שקט לארוחת ערב?",
+    "כן, בבקשה תשמור.",
+    "נשמע מושלם.",
+    "יש יציאה מאוחרת ביום ראשון?",
+    "תודה, זה מאוד נחמד.",
+    "בואו נעשה שש.",
+    "אפשר להוסיף פרחים לחדר?",
+    "יפה. זה הכל בינתיים.",
+  ],
+};
+
+export const chat = { en, he };
+export const chatLists = { en: enL, he: heL };

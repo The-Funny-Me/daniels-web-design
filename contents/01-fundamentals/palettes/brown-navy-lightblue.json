@@ -1,0 +1,9 @@
+{
+  "id": "brown-navy-lightblue",
+  "name": "Brown, Navy & Light Blue",
+  "description": "Warm paper and espresso-brown with a soft sky-blue highlight; dark mode flips to deep navy.",
+  "canvas": { "light": "#F6F1EA", "dark": "#0C1424" },
+  "ink": { "light": "#2B1D17", "dark": "#E9EDF5" },
+  "accent": "#7FA8D1",
+  "secondary": "#5A3E31"
+}

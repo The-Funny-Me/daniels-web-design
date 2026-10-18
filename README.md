@@ -1,64 +1,55 @@
-# `/web-design` Work Folder & Skill System
+# web-design
 
-A complete design-system repository and agentic skill specification for high-craft, luxury web application design ("minimal maximum", white velvet sheets aesthetic).
+A complete design work folder: conventions, tokens, rules, stack, signature moves, golden examples. It is built to be used by humans and agents, and to become the `/web-design` agentic coding skill (`SKILL.md` is already the skill entry point).
 
----
-
-## Directory Structure
+## Layout
 
 ```
 web-design/
-  SKILL.md                 # Primary skill definition & system prompt
-  README.md                # System documentation & folder map
-  references.md            # Sourced design references & verified guidelines
-  HANDOFF.md               # Continuous build logs and state handoff specs
-  preview.html             # Standalone interactive showcase page
-  01-fundamentals/         # Token generator pipeline, OKLCH rules, contrast checks
-    core.json              # Core values, timings, springs, elevation rules
-    contrast-report.json   # Automated WCAG AA hard-fail test output
-    foundations.md         # Design principles documentation
-    palette.md             # Color swatches and palette guide
-    preview.html           # Living design tokens preview
-    palettes/*.json        # 8 curated color palettes
-    scripts/               # Token build & preview generator scripts
-  02-rules/                # Mandatory UI/UX rules and physics
-    ui-rules.md            # Spatial 8pt grid, dark mode elevation, optical alignment
-    ux-rules.md            # Cursor dynamics, form physics, state & motion
-    i18n-rtl.md            # Logical properties & Hebrew RTL guidelines
-  03-libraries/            # Stack specifications & library rules
-    stack.md               # Next.js 16, React 19, Tailwind v4, Motion, Radix
-  04-signature-moves/      # Signature interaction move blueprints
-    accent-intensity.md    # 5-level dynamic accent ladder
-    animated-inputs.md     # Cycling placeholder & password physics
-    interactions.md        # Code patterns for safe triangle, debouncing, optimistic UI
-    scroll-and-focus.md    # Smooth scroll focus & chat scroll latch mechanics
-    type-moves.md          # Ghost numerals, tracked labels, serif headlines
-  05-golden-examples/      # Production Next.js reference codebase
-    app/                   # Complete Next.js application with 4 pages
-    landing.md             # Landing page specifications
-    auth.md                # Auth flow & security sheet specifications
-    chat.md                # Chat interface & scroll latch specifications
-    dashboard.md           # Dashboard & dataviz specifications
+├── SKILL.md                    skill entry point (workflow + hard rules + file index)
+├── README.md
+├── references.md               inspiration sources, with what is and is not verified
+├── 01-fundamentals/
+│   ├── foundations.md          the numbers: roles, type, spacing, radius, depth, motion, loading, layout
+│   ├── core.json               pack-independent tokens (edit here)
+│   ├── palettes/*.json         8 color packs (seeds; edit here)
+│   ├── scripts/build-tokens.mjs  generator + WCAG hard-fail checks (no dependencies)
+│   └── tokens.json · tokens.css · tailwind-theme.css · shadcn-bridge.css · palette.md · preview.html · contrast-report.json   (generated)
+├── 02-rules/                   ui-rules.md · ux-rules.md · i18n-rtl.md
+├── 03-libraries/stack.md       approved stack and library boundaries
+├── 04-signature-moves/         interactions · animated-inputs · scroll-and-focus · accent-intensity · type-moves
+└── 05-golden-examples/         briefs (landing, auth, chat, dashboard); references/ for your screenshots
 ```
 
----
+## Commands
 
-## System Capabilities
+```bash
+node 01-fundamentals/scripts/build-tokens.mjs           # regenerate all token outputs; exit 1 on any hard contrast failure
+node 01-fundamentals/scripts/build-tokens.mjs --check   # verify only
+```
 
-- **8 Design Packs:** Default `champagne-wine`, `brown-navy-lightblue`, `deep-green-brown`, `monochrome`, `navy-cream-green`, `silver-white`, `toxic-white-orange`, `wine-gold`.
-- **Navigation & Cursor Physics:** Submenu aiming safe-triangle vector buffer, expanded hit targets (Fitts's Law), 150ms hover intent delay.
-- **Search & Input Physics:** 250ms debounced queries, backspace cache lookup, submit button dimension locks, mobile `inputmode` tailoring.
-- **State & Motion Physics:** Instant optimistic UI updates with silent background sync and rollback toasts, focus trapping/restoration, natural cubic-bezier spring curves.
-- **Visual Polish:** Zero-CLS skeleton reserve areas, 1–2px optical icon alignments, dark mode elevation tint layering.
+Open `01-fundamentals/preview.html` in a browser. It is a living showcase of the system, not a swatch sheet: switch pack, light/dark, LTR/RTL (full Hebrew), motion on/off and a simulated slow load, and try the animated inputs, the accent ladder (levels 0 to 4, including the particle burst), the glass sheet, the undo toast and the adaptive loader. Its source is `01-fundamentals/scripts/preview.template.html`; the build injects the tokens.
 
----
+## Adding a palette pack
 
-## Running the Showcase & App
+1. Create `01-fundamentals/palettes/<id>.json`:
+   `id`, `name`, `description`, `canvas {light, dark}`, `accent`, `secondary`, optional `ink {light, dark}` (text tint hints), optional `metal {name, light[4], dark[4]}`.
+2. Run the build. Fix any failures it reports (it names the pack, mode and role).
+3. Review in `preview.html`. Add the pack to the table in `foundations.md §1`.
 
-- Open `preview.html` directly in any browser to interactively test all signature moves, cursor dynamics, form physics, and design packs in real time.
-- Launch the Next.js golden examples:
-  ```bash
-  cd 05-golden-examples/app
-  npm install
-  npm run dev
-  ```
+Mark exactly one pack `"isDefault": true`.
+
+## Status
+
+| Part | State |
+|---|---|
+| 01 Fundamentals, token generator, 8 packs | Built; 275 hard checks pass |
+| 02 Rules | Written |
+| 03 Libraries | Written |
+| 04 Signature moves | Specified (parameters, states, a11y, RTL, reduced-motion) |
+| 05 Golden examples | **Briefs and acceptance criteria only; component code not built yet** |
+| Radius choice | Provisional; confirm against reference screenshots |
+
+## Installing as a skill
+
+Copy this folder to the skills directory your agent reads (for Claude Code: `~/.claude/skills/web-design/` or the project's `.claude/skills/web-design/`). `SKILL.md` frontmatter is already valid. Invoke with `/web-design`.

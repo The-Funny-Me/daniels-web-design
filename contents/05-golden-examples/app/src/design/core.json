@@ -1,0 +1,129 @@
+{
+  "$comment": "Pack-independent tokens. Colors live in palettes/*.json and are derived by scripts/build-tokens.mjs. Edit here, then run: node 01-fundamentals/scripts/build-tokens.mjs",
+  "font": {
+    "display": "'Cormorant Garamond', 'Frank Ruhl Libre', ui-serif, Georgia, serif",
+    "body": "'Inter Variable', 'Inter', 'Heebo', ui-sans-serif, system-ui, sans-serif",
+    "mono": "'JetBrains Mono', ui-monospace, SFMono-Regular, monospace"
+  },
+  "text": {
+    "2xs": "0.6875rem",
+    "xs": "0.75rem",
+    "sm": "0.875rem",
+    "base": "1rem",
+    "lg": "1.125rem",
+    "xl": "1.375rem",
+    "2xl": "1.75rem",
+    "3xl": "2.25rem",
+    "4xl": "clamp(2.5rem, 5vw, 3.5rem)",
+    "display-lg": "clamp(3.25rem, 7vw, 6rem)",
+    "display-xl": "clamp(4rem, 10vw, 8.5rem)",
+    "numeral-ghost": "clamp(8rem, 22vw, 20rem)"
+  },
+  "leading": {
+    "display": "1.05",
+    "heading": "1.2",
+    "body": "1.55",
+    "body-rtl": "1.65"
+  },
+  "tracking": {
+    "display": "-0.02em",
+    "body": "0",
+    "label": "0.18em"
+  },
+  "weight": {
+    "display": "400",
+    "body": "400",
+    "emphasis": "500",
+    "label": "500"
+  },
+  "radius": {
+    "editorial": "2px",
+    "xs": "6px",
+    "sm": "12px",
+    "md": "16px",
+    "card": "24px",
+    "sheet": "32px",
+    "pill": "9999px"
+  },
+  "space": {
+    "0.5": "4px",
+    "1": "8px",
+    "1.5": "12px",
+    "2": "16px",
+    "3": "24px",
+    "4": "32px",
+    "6": "48px",
+    "8": "64px",
+    "12": "96px",
+    "16": "128px",
+    "touch": "44px"
+  },
+  "section": {
+    "xs": "clamp(21px, 3vw, 34px)",
+    "sm": "clamp(34px, 4.5vw, 55px)",
+    "md": "clamp(55px, 7vw, 89px)",
+    "lg": "clamp(89px, 11vw, 144px)",
+    "xl": "clamp(144px, 17vw, 233px)"
+  },
+  "layout": {
+    "container-app": "1200px",
+    "container-marketing": "1360px",
+    "container-reading": "680px",
+    "gutter": "clamp(16px, 4vw, 64px)",
+    "grid-gap": "clamp(16px, 2vw, 32px)",
+    "columns": "12"
+  },
+  "breakpoint": {
+    "sm": "640px",
+    "md": "768px",
+    "lg": "1024px",
+    "xl": "1280px",
+    "2xl": "1536px"
+  },
+  "motion": {
+    "duration": {
+      "press": "120ms",
+      "ui": "320ms",
+      "slow": "450ms",
+      "hero": "900ms"
+    },
+    "stagger": "60ms",
+    "ease": {
+      "soft": "cubic-bezier(0.22, 1, 0.36, 1)",
+      "in-out": "cubic-bezier(0.65, 0, 0.35, 1)"
+    },
+    "spring": {
+      "$comment": "damping must be >= 2*sqrt(stiffness*mass) (critically damped or over) so overlays never overshoot. Verified by the build script.",
+      "overlay": { "stiffness": 260, "damping": 34, "mass": 1 },
+      "ui": { "stiffness": 380, "damping": 40, "mass": 1 },
+      "hero": { "stiffness": 120, "damping": 22, "mass": 1 }
+    }
+  },
+  "glass": {
+    "blur": "24px",
+    "saturate": "1.4",
+    "scrim-blur": "8px"
+  },
+  "loading": {
+    "$comment": "Adaptive loading. Fast loads fade in directly; slow loads show the loading screen, which then hands off into the same fade-in. See 02-rules/ux-rules.md.",
+    "showAfterMs": 300,
+    "minVisibleMs": 600,
+    "revealDurationMs": 700,
+    "staggerMs": 60
+  },
+  "z": {
+    "base": "0",
+    "sticky": "10",
+    "nav": "20",
+    "overlay": "40",
+    "modal": "50",
+    "toast": "60"
+  },
+  "icon": {
+    "weight": "thin",
+    "weight-emphasis": "light",
+    "size-sm": "16px",
+    "size-md": "20px",
+    "size-lg": "24px"
+  }
+}

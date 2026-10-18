@@ -1,0 +1,90 @@
+[
+  {
+    "id": "champagne-wine",
+    "name": "Champagne & Wine",
+    "isDefault": true,
+    "swatch": {
+      "canvas": "#FBF9F6",
+      "accent": "#A68A64",
+      "secondary": "#6B1D33",
+      "night": "#110F14"
+    }
+  },
+  {
+    "id": "brown-navy-lightblue",
+    "name": "Brown, Navy & Light Blue",
+    "isDefault": false,
+    "swatch": {
+      "canvas": "#F6F1EA",
+      "accent": "#7FA8D1",
+      "secondary": "#5A3E31",
+      "night": "#0C1424"
+    }
+  },
+  {
+    "id": "deep-green-brown",
+    "name": "Deep Green & Brown",
+    "isDefault": false,
+    "swatch": {
+      "canvas": "#F3EFE6",
+      "accent": "#8A5A3B",
+      "secondary": "#0F4D3A",
+      "night": "#07140F"
+    }
+  },
+  {
+    "id": "monochrome",
+    "name": "Monochrome Black & White",
+    "isDefault": false,
+    "swatch": {
+      "canvas": "#FBFBFA",
+      "accent": "#8E8E93",
+      "secondary": "#121214",
+      "night": "#0B0B0C"
+    }
+  },
+  {
+    "id": "navy-cream-green",
+    "name": "Navy, Cream & Green",
+    "isDefault": false,
+    "swatch": {
+      "canvas": "#F7F3E8",
+      "accent": "#2F7A58",
+      "secondary": "#14284B",
+      "night": "#0A1226"
+    }
+  },
+  {
+    "id": "silver-white",
+    "name": "Silver & White",
+    "isDefault": false,
+    "swatch": {
+      "canvas": "#F6F8FA",
+      "accent": "#9AA5B4",
+      "secondary": "#2B3441",
+      "night": "#0E1116"
+    }
+  },
+  {
+    "id": "toxic-white-orange",
+    "name": "Toxic Green, White & Orange",
+    "isDefault": false,
+    "swatch": {
+      "canvas": "#FAFAF7",
+      "accent": "#B4F000",
+      "secondary": "#FF6B1F",
+      "night": "#0A0B09"
+    }
+  },
+  {
+    "id": "wine-gold",
+    "name": "Wine & Gold-Bronze",
+    "isDefault": false,
+    "swatch": {
+      "canvas": "#F8F2EE",
+      "accent": "#B07D2E",
+      "secondary": "#7A1630",
+      "night": "#150810"
+    }
+  }
+]

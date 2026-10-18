@@ -1,0 +1,9 @@
+{
+  "id": "toxic-white-orange",
+  "name": "Toxic Green, White & Orange",
+  "description": "High-energy: toxic lime on clean white with hot orange as the secondary. Raw lime is decorative only; the generator derives a readable text variant.",
+  "canvas": { "light": "#FAFAF7", "dark": "#0A0B09" },
+  "ink": { "light": "#11130E" },
+  "accent": "#B4F000",
+  "secondary": "#FF6B1F"
+}

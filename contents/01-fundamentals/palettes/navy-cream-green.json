@@ -1,0 +1,9 @@
+{
+  "id": "navy-cream-green",
+  "name": "Navy, Cream & Green",
+  "description": "Deep navy ink on cream, with a calm forest-emerald accent. Dark mode is navy midnight with cream text.",
+  "canvas": { "light": "#F7F3E8", "dark": "#0A1226" },
+  "ink": { "light": "#0F1F3D", "dark": "#F1EBDA" },
+  "accent": "#2F7A58",
+  "secondary": "#14284B"
+}

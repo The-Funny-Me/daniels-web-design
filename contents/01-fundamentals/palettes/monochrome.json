@@ -1,0 +1,8 @@
+{
+  "id": "monochrome",
+  "name": "Monochrome Black & White",
+  "description": "Pure tonal system. Spacing, type and motion do all the work; the only 'color' is the graphite accent.",
+  "canvas": { "light": "#FBFBFA", "dark": "#0B0B0C" },
+  "accent": "#8E8E93",
+  "secondary": "#121214"
+}

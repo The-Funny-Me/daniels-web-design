@@ -1,0 +1,205 @@
+@import "tailwindcss";
+@import "../design/tokens.css";
+@import "../design/shadcn-bridge.css";
+@import "../design/tailwind-theme.css";
+
+/* ------------------------------------------------------------------ base */
+@layer base {
+  html {
+    background: var(--ds-canvas);
+    color: var(--ds-text-primary);
+    font-family: var(--ds-font-body);
+    line-height: var(--ds-leading-body);
+    overflow-x: clip;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+    color-scheme: light dark;
+  }
+  :root[data-theme="light"] { color-scheme: light; }
+  :root[data-theme="dark"] { color-scheme: dark; }
+  body {
+    min-block-size: 100dvh;
+    overflow-x: clip;
+    background: var(--ds-canvas);
+    transition: background-color var(--ds-duration-slow) var(--ds-ease-soft), color var(--ds-duration-slow) var(--ds-ease-soft);
+  }
+  /* velvet grain: neutral soft-light noise, far too faint to affect contrast */
+  body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    z-index: 100;
+    pointer-events: none;
+    opacity: 0.06;
+    mix-blend-mode: soft-light;
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='180' height='180'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 .5  0 0 0 0 .5  0 0 0 0 .5  0 0 0 .9 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
+  }
+  :focus-visible {
+    outline: 2px solid var(--ds-focus-ring);
+    outline-offset: 3px;
+  }
+  ::selection { background: color-mix(in oklch, var(--ds-accent) 35%, transparent); }
+  /* Cormorant defaults to old-style figures, which read as letters in headings ('12' looks like 'I2') */
+  h1, h2, h3, h4, .font-display { font-variant-numeric: lining-nums; }
+  button { cursor: pointer; }
+  button:disabled { cursor: not-allowed; }
+  /* the undo hairline drains toward the inline-start edge in both directions */
+  [data-sonner-toast] { --drain-origin: 0% 50%; }
+  :root[dir="rtl"] [data-sonner-toast] { --drain-origin: 100% 50%; }
+  /* Radix portals sit outside the app tree but inherit the same tokens through :root */
+}
+
+/* ------------------------------------------------------------------ components (design-system recipes) */
+@layer components {
+  /* glass: overlay layer only (nav, sheets, modals, toasts, composer). Never on base cards; never glass on glass. */
+  .glass {
+    background: var(--ds-glass-bg);
+    border: 1px solid var(--ds-glass-border);
+    -webkit-backdrop-filter: blur(var(--ds-glass-blur)) saturate(var(--ds-glass-saturate));
+    backdrop-filter: blur(var(--ds-glass-blur)) saturate(var(--ds-glass-saturate));
+    box-shadow: var(--ds-shadow-md);
+  }
+  @media (prefers-reduced-transparency: reduce) {
+    .glass { background: var(--ds-surface-raised); -webkit-backdrop-filter: none; backdrop-filter: none; }
+    .scrim { -webkit-backdrop-filter: none; backdrop-filter: none; }
+  }
+
+  /* tracked small-caps label. Hebrew: no uppercase exists and tracking breaks letter joins (tokens zero it under rtl). */
+  .ds-label {
+    font-size: var(--ds-text-2xs);
+    letter-spacing: var(--ds-tracking-label);
+    text-transform: uppercase;
+    font-weight: var(--ds-weight-label);
+    color: var(--ds-text-secondary);
+  }
+  :root[dir="rtl"] .ds-label { font-size: var(--ds-text-sm); }
+
+  /* lift & press */
+  .lift {
+    transition:
+      transform var(--ds-duration-press) var(--ds-ease-soft),
+      box-shadow var(--ds-duration-ui) var(--ds-ease-soft),
+      background-color var(--ds-duration-ui) var(--ds-ease-soft),
+      border-color var(--ds-duration-ui) var(--ds-ease-soft),
+      opacity var(--ds-duration-ui) var(--ds-ease-soft);
+  }
+  @media (hover: hover) {
+    .lift:not(:disabled):not([aria-disabled="true"]):hover { transform: scale(1.02); }
+    .lift-sm:not(:disabled):hover { transform: scale(1.01); }
+  }
+  .lift:not(:disabled):not([aria-disabled="true"]):active { transform: scale(0.98); }
+
+  /* specular glint sweep; direction-aware */
+  .glint::after {
+    content: "";
+    position: absolute;
+    inset-block: -20%;
+    inset-inline-start: -40%;
+    inline-size: 30%;
+    pointer-events: none;
+    opacity: 0;
+    background: linear-gradient(90deg, transparent, rgb(255 255 255 / 0.38), transparent);
+    transform: skewX(-20deg);
+  }
+  .glint:hover::after,
+  .glint:focus-visible::after,
+  .glint[data-glint="once"]::after {
+    animation: glint var(--ds-duration-hero) var(--ds-ease-in-out) 1;
+  }
+
+  /* cursor-following light (accent level 1) */
+  .glow-card { position: relative; }
+  .glow-card::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity var(--ds-duration-slow) var(--ds-ease-soft);
+    background: radial-gradient(
+      220px circle at var(--cx, 50%) var(--cy, 50%),
+      color-mix(in srgb, var(--ds-glow) 100%, transparent) 0%,
+      color-mix(in srgb, var(--ds-glow) 70%, transparent) 25%,
+      color-mix(in srgb, var(--ds-glow) 35%, transparent) 50%,
+      color-mix(in srgb, var(--ds-glow) 10%, transparent) 75%,
+      transparent 100%
+    );
+  }
+  @media (hover: hover) { .glow-card:hover::before { opacity: 0.8; } }
+
+  /* eased radial light (accent level 2): no visible edge */
+  .radial-light {
+    background: radial-gradient(
+      closest-side circle at 50% 50%,
+      color-mix(in srgb, var(--ds-glow) 100%, transparent) 0%,
+      color-mix(in srgb, var(--ds-glow) 70%, transparent) 25%,
+      color-mix(in srgb, var(--ds-glow) 35%, transparent) 50%,
+      color-mix(in srgb, var(--ds-glow) 10%, transparent) 75%,
+      transparent 100%
+    );
+  }
+
+  /* the only spinner in the system: inside a pending button. Reduced motion swaps rotation for a slow opacity pulse. */
+  .spinner { animation: spin 900ms linear infinite; }
+
+  .shiver { animation: shiver 2.4s linear 3; }
+  .breathe { animation: breathe 7s ease-in-out infinite; }
+
+  /* metallic hairline: only packs that define metals; others fall back to the plain hairline */
+  .hairline-metal {
+    block-size: 1px;
+    border: 0;
+    background: var(--ds-metal-hairline, var(--ds-border-hairline));
+    background-size: 200% 100%;
+  }
+  .hairline-metal[data-shimmer="true"] { animation: sheen 9s linear infinite; }
+}
+
+/* ------------------------------------------------------------------ keyframes */
+@keyframes glint {
+  0% { opacity: 1; transform: skewX(-20deg) translateX(calc(var(--ds-dir) * -120%)); }
+  100% { opacity: 1; transform: skewX(-20deg) translateX(calc(var(--ds-dir) * 520%)); }
+}
+@keyframes breathe { 0%, 100% { opacity: 0.4; } 50% { opacity: 0.75; } }
+@keyframes sheen { from { background-position: 0 0; } to { background-position: 200% 0; } }
+@keyframes blink { 50% { opacity: 0; } }
+@keyframes spin { to { transform: rotate(360deg); } }
+@keyframes drain { from { transform: scaleX(1); } to { transform: scaleX(0); } }
+@keyframes track { from { transform: translateX(calc(var(--ds-dir) * -100%)); } to { transform: translateX(calc(var(--ds-dir) * 250%)); } }
+@keyframes shiver {
+  0%, 100% { transform: translate(0, 0); }
+  10% { transform: translate(0.6px, -0.4px); }
+  20% { transform: translate(-0.5px, 0.5px); }
+  30% { transform: translate(0.4px, 0.6px); }
+  40% { transform: translate(-0.6px, -0.3px); }
+  50% { transform: translate(0.3px, 0.4px); }
+  60% { transform: translate(-0.4px, -0.6px); }
+  70% { transform: translate(0.6px, 0.2px); }
+  80% { transform: translate(-0.3px, 0.5px); }
+  90% { transform: translate(0.2px, -0.5px); }
+}
+
+/* ------------------------------------------------------------------ reduced motion
+   One collapse for the OS setting and for the in-app "Motion off" switch (data-motion="reduced"):
+   no transforms, parallax, particles, shiver or typing; opacity fades only. */
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  .lift:hover, .lift:active, .lift-sm:hover { transform: none !important; }
+  .glint::after { display: none; }
+  .shiver, .breathe, .hairline-metal[data-shimmer="true"] { animation: none; }
+  [data-anim] { animation: none !important; }
+  .spinner { animation: breathe 1.8s ease-in-out infinite; }
+  [data-sonner-toast] { transition-duration: 0.01ms !important; }
+}
+:root[data-motion="reduced"] { scroll-behavior: auto; }
+:root[data-motion="reduced"] .lift:hover,
+:root[data-motion="reduced"] .lift:active,
+:root[data-motion="reduced"] .lift-sm:hover { transform: none !important; }
+:root[data-motion="reduced"] .glint::after { display: none; }
+:root[data-motion="reduced"] .shiver,
+:root[data-motion="reduced"] .breathe,
+:root[data-motion="reduced"] .hairline-metal[data-shimmer="true"],
+:root[data-motion="reduced"] [data-anim] { animation: none !important; }
+:root[data-motion="reduced"] .spinner { animation: breathe 1.8s ease-in-out infinite; }
+:root[data-motion="reduced"] [data-sonner-toast] { transition-duration: 0.01ms !important; }

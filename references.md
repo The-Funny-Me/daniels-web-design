@@ -1,35 +1,30 @@
-# References & Verified Guidelines
+# References
 
-Sourced design references, verified ergonomic principles, and technical specifications behind the `/web-design` system.
+Inspiration sources you supplied, and **what I was actually able to verify** about each. I read pages as text and metadata only; I did not see rendered visuals for any of them. Where a row says "unverified", nothing about that design's look has been taken from it. Please add screenshots to `05-golden-examples/references/` and the notes below can be upgraded from "inferred" to "observed".
 
----
+| # | Source | Fetched? | What was verified | Used for |
+|---|---|---|---|---|
+| 1 | Awwwards: "Mobile" element from *Mews Unfold 2024* (Dennis Snellenberg) | Yes (page text) | Title, author and parent site only; the image is not readable as text | Nothing yet; screenshot needed |
+| 2 | Behance: *AI Companion App UI/UX & Character Design* | **Blocked** (bot detection) | Nothing | Nothing yet |
+| 3 | animejs.com | Yes | It is the anime.js v4 library site: modular API, timeline, scroll observer, SVG tools (`createDrawable`, `morphTo`, `createMotionPath`), springs and draggable, stagger | Library choice and the boundary "anime.js owns SVG/scroll sequences" |
+| 4 | recent.design: hairline isometric icon library | Returned the generic site shell only | Nothing about the item | Informed the **hairline icon** direction (Phosphor thin) only through your description |
+| 5 | recent.design: Lead Bank card 3D concept | Returned the generic site shell only | Nothing about the item | Nothing |
+| 6 | recent.design: Krea agent landing page | Returned the generic site shell only | Nothing about the item | Nothing |
+| 7 | recent.design: Designer portfolio website | Yes (metadata) | "Minimal scroll-driven portfolio built around chapter-based sections with a polished metallic 3D blob mascot, serif numerals, and editorial typography." Tags: typographic, minimal, editorial, black & white, light, scroll animation | **Ghost oversized numerals**, chapter-based sections, `monochrome` pack, scroll reveals |
+| 8 | recent.design: Spider-Man character illustrations | Not fetched | Nothing | Nothing (and it is a licensed character; do not reproduce) |
+| 9 | GiGi energy drink landing page (v0) | Yes (text) | Uppercase display headline, lime `#AFFF00` theme color, product-centered hero, flavour selector, benefit stats, social grid | The **`toxic-white-orange`** pack's lime; bold hero typography as a contrast to the default pack |
+| 10 | Figma: Positivus landing page (community) | Not fetched (Figma requires auth/JS) | Nothing | Nothing yet |
+| 11 | Figma: eCommerce / interior landing page UI kit (community) | Not fetched | Nothing | Nothing yet |
 
-## 1. Verified Interaction Physics & Cursor Dynamics
+## What this means
 
-### 1.1 Safe Triangle Submenu Trajectory
-- **Reference:** Amazon, Khan Academy, and Radix UI Navigation Menu pointer tracking vector math algorithms.
-- **Rule:** Prevent premature menu item collapse during diagonal cursor movement across parent list items by defining a dynamic 2D vector triangle bounded by cursor position $(x, y)$ and submenu corners $(x_1, y_1), (x_2, y_2)$.
+The system's look comes from **your written description** (white velvet sheets, golden hotel room, champagne and wine, minimal maximum) and your answers, not from measuring these pages. The one decision that most depends on the references is **radii and shape language**, which you delegated to them. It is currently a provisional inference (pill controls, 24px cards); see `01-fundamentals/foundations.md §5`.
 
-### 1.2 Fitts's Law & Target Expansion
-- **Reference:** Paul Fitts (1954) Ergonomic Law for Human-Computer Interaction ($MT = a + b \log_2(2D/W)$).
-- **Rule:** Target width ($W$) directly influences movement time ($MT$). Expanding clickable hit targets to fill full container padding or card bounds minimizes targeting effort and eliminates interaction misfires.
+## To close the gap
 
-### 1.3 Debounced Intent & Race Condition Mitigation
-- **Reference:** ReactiveX / RxJS debouncing & `switchMap` cancellation protocols.
-- **Rule:** Enforce a 200–300ms pause threshold on text inputs prior to network dispatches and cancel previous pending requests using `AbortController` to guarantee asynchronous result synchronization.
+Drop screenshots of #1, #2, #4, #5, #6, #7, #10, #11 into `05-golden-examples/references/` (any filename), then ask for a reference-audit pass: it should measure radii, spacing, type pairing and color, then update foundations §5, the pack seeds and this table.
 
----
+## Rules for using references
 
-## 2. Layout & Visual Ergonomics
-
-### 2.1 Dark Mode Surface Elevation via Tinting
-- **Reference:** Material Design Dark Theme Surface Elevation & Apple Human Interface Guidelines for Dark Mode.
-- **Rule:** Dark interfaces lack contrast for shadow keylights. Elevation is expressed by adding semi-transparent white lightness overlays (+4%, +8%, +12% opacity) over the base canvas.
-
-### 2.2 Optical Alignment vs. Mathematical Center
-- **Reference:** Typography & Iconography Design Principles (Optical Weight Balance).
-- **Rule:** Asymmetrical shapes (such as play triangles) have visual center points shifted toward their base. Offsetting play triangles by +1–2px on the X-axis restores perceived visual equilibrium.
-
-### 2.3 Cumulative Layout Shift (CLS) Mitigation
-- **Reference:** W3C Web Vitals Specification for Cumulative Layout Shift.
-- **Rule:** Reserve fixed aspect ratio space (`aspect-ratio` or `min-height`) for dynamic elements prior to image/data load to guarantee 0px layout shift (CLS = 0.00).
+- References are for *feeling* and *structure*, never to copy a layout, a mascot, an illustration or a brand. Characters such as Spider-Man, other brands' logos and distinctive artwork are never reproduced.
+- Every adopted idea gets rewritten in the system's own tokens and recorded here with its source.

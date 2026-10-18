@@ -1,0 +1,14 @@
+{
+  "id": "deep-green-brown",
+  "name": "Deep Green & Brown",
+  "description": "Poker-table felt green with leather-brass brown on parchment. Dark mode is green-black.",
+  "canvas": { "light": "#F3EFE6", "dark": "#07140F" },
+  "ink": { "light": "#1B2A22", "dark": "#EDE9DC" },
+  "accent": "#8A5A3B",
+  "secondary": "#0F4D3A",
+  "metal": {
+    "name": "brass-leather",
+    "light": ["#E7D2A4", "#C49A5A", "#8A5A3B", "#D9B882"],
+    "dark": ["#EBD7AC", "#CFA566", "#A8774D", "#E0C08C"]
+  }
+}

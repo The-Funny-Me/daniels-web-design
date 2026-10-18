@@ -1,0 +1,14 @@
+{
+  "id": "champagne-wine",
+  "name": "Champagne & Wine",
+  "isDefault": true,
+  "description": "Default pack. Airy, ivory-led luxury: champagne-bronze hairlines and glints, wine-velvet as the deep secondary. Dark mode is warm ink midnight.",
+  "canvas": { "light": "#FBF9F6", "dark": "#110F14" },
+  "accent": "#A68A64",
+  "secondary": "#6B1D33",
+  "metal": {
+    "name": "champagne-bronze",
+    "light": ["#EFE3CC", "#D2B88C", "#A68A64", "#E2CFA9"],
+    "dark": ["#F3E7CF", "#D9BF93", "#B79A6E", "#EAD7B0"]
+  }
+}

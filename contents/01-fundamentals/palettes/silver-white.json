@@ -1,0 +1,13 @@
+{
+  "id": "silver-white",
+  "name": "Silver & White",
+  "description": "Cool, clinical-luxe: white canvas, brushed-silver accent, slate secondary. Good for tech, fintech, product launches.",
+  "canvas": { "light": "#F6F8FA", "dark": "#0E1116" },
+  "accent": "#9AA5B4",
+  "secondary": "#2B3441",
+  "metal": {
+    "name": "silver",
+    "light": ["#F4F6F9", "#C9D0DA", "#9AA5B4", "#E3E8EE"],
+    "dark": ["#F2F5F9", "#CDD5DF", "#A7B2C1", "#E6EBF1"]
+  }
+}
