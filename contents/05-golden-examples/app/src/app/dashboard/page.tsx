@@ -12,6 +12,7 @@ import { useDesign } from "@/components/patterns/design-provider";
 import { Eyebrow } from "@/components/patterns/eyebrow";
 import { LoadingGate } from "@/components/patterns/loading-gate";
 import { GlassSheet } from "@/components/patterns/overlay";
+import { RegionBoundary, RegionError } from "@/components/patterns/region-error";
 import { Reveal } from "@/components/patterns/reveal";
 import { noticeToast, undoToast } from "@/components/patterns/toaster";
 import { Button } from "@/components/ui/button";
@@ -129,7 +130,7 @@ export default function DashboardPage() {
           </div>
         </header>
 
-        <main id="main" className="mx-auto grid max-w-app gap-(--ds-grid-gap) px-(--ds-gutter) py-section-sm">
+        <main id="main" className="mx-auto grid max-w-app grid-cols-[minmax(0,1fr)] gap-(--ds-grid-gap) px-(--ds-gutter) py-section-sm">
           <LoadingGate phase={phase} onRetry={reload} compact>
             {data && (
               <>
@@ -156,7 +157,7 @@ export default function DashboardPage() {
                   ))}
                 </ul>
 
-                <div className="grid gap-(--ds-grid-gap) lg:grid-cols-3">
+                <div className="grid min-w-0 grid-cols-[minmax(0,1fr)] gap-(--ds-grid-gap) lg:grid-cols-3">
                   <Reveal index={6} className="min-w-0 lg:col-span-2">
                     <Card className="grid h-full min-w-0 grid-cols-[minmax(0,1fr)] gap-4 p-6">
                       <div className="flex flex-wrap items-center justify-between gap-3">
@@ -166,51 +167,59 @@ export default function DashboardPage() {
                           {tableView ? t("dashViewChart") : t("dashViewTable")}
                         </Button>
                       </div>
-                      {tableView ? (
-                        <div className="overflow-x-auto">
-                          <table className="w-full border-collapse text-start tabular-nums">
-                            <caption className="sr-only">{t("dashChartTitle")}</caption>
-                            <thead>
-                              <tr className="border-b border-hairline text-sm text-ink-2">
-                                <th scope="col" className="px-3 py-2 text-start font-normal"> </th>
-                                <th scope="col" className="px-3 py-2 text-end font-normal">{t("dashChartThis")}</th>
-                                <th scope="col" className="px-3 py-2 text-end font-normal">{t("dashChartLast")}</th>
-                              </tr>
-                            </thead>
-                            <tbody>
-                              {data.thisYear.map((v, i) => (
-                                <tr key={i} className="border-b border-hairline last:border-b-0">
-                                  <th scope="row" className="px-3 py-2 text-start font-normal text-ink-2">{t("dashWeek", { n: i + 1 })}</th>
-                                  <td className="px-3 py-2 text-end text-ink">{num.format(v)}</td>
-                                  <td className="px-3 py-2 text-end text-ink-2">{num.format(data.lastYear[i] ?? 0)}</td>
+                      <RegionBoundary fallback={(reset) => <RegionError onRetry={() => { setFail(false); reset(); }} />}>
+                        {fail ? (
+                          <RegionError onRetry={() => setFail(false)} />
+                        ) : tableView ? (
+                          <div className="relative overflow-x-auto">
+                            <table className="w-full border-collapse text-start tabular-nums">
+                              <caption className="sr-only">{t("dashChartTitle")}</caption>
+                              <thead>
+                                <tr className="border-b border-hairline text-sm text-ink-2">
+                                  <th scope="col" className="px-3 py-2 text-start font-normal"> </th>
+                                  <th scope="col" className="px-3 py-2 text-end font-normal">{t("dashChartThis")}</th>
+                                  <th scope="col" className="px-3 py-2 text-end font-normal">{t("dashChartLast")}</th>
                                 </tr>
-                              ))}
-                            </tbody>
-                          </table>
-                        </div>
-                      ) : (
-                        <LineChart
-                          series={series}
-                          tick={(i) => t("dashWeekShort", { n: i + 1 })}
-                          heading={(i) => t("dashWeek", { n: i + 1 })}
-                          announce={(i) => t("dashChartPoint", { n: i + 1, a: num.format(data.thisYear[i] ?? 0), b: num.format(data.lastYear[i] ?? 0) })}
-                          describe={t("dashChartDesc")}
-                        />
-                      )}
+                              </thead>
+                              <tbody>
+                                {data.thisYear.map((v, i) => (
+                                  <tr key={i} className="border-b border-hairline last:border-b-0">
+                                    <th scope="row" className="px-3 py-2 text-start font-normal text-ink-2">{t("dashWeek", { n: i + 1 })}</th>
+                                    <td className="px-3 py-2 text-end text-ink">{num.format(v)}</td>
+                                    <td className="px-3 py-2 text-end text-ink-2">{num.format(data.lastYear[i] ?? 0)}</td>
+                                  </tr>
+                                ))}
+                              </tbody>
+                            </table>
+                          </div>
+                        ) : (
+                          <LineChart
+                            series={series}
+                            tick={(i) => t("dashWeekShort", { n: i + 1 })}
+                            heading={(i) => t("dashWeek", { n: i + 1 })}
+                            announce={(i) => t("dashChartPoint", { n: i + 1, a: num.format(data.thisYear[i] ?? 0), b: num.format(data.lastYear[i] ?? 0) })}
+                            describe={t("dashChartDesc")}
+                          />
+                        )}
+                      </RegionBoundary>
                     </Card>
                   </Reveal>
-                  <Reveal index={7}>
-                    <Card className="grid h-full content-start gap-4 p-6">
+                  <Reveal index={7} className="min-w-0">
+                    <Card className="grid h-full min-w-0 grid-cols-[minmax(0,1fr)] content-start gap-4 p-6">
                       <h2 className="font-display text-2xl">{t("dashActivity")}</h2>
-                      <ActivityFeed />
+                      <RegionBoundary fallback={(reset) => <RegionError onRetry={reset} />}>
+                        <ActivityFeed />
+                      </RegionBoundary>
                     </Card>
                   </Reveal>
                 </div>
 
-                <Reveal index={8}>
-                  <Card className="grid gap-2 p-6">
+                <Reveal index={8} className="min-w-0">
+                  <Card className="grid min-w-0 grid-cols-[minmax(0,1fr)] gap-2 p-6">
                     <h2 className="font-display text-2xl">{t("dashTableTitle")}</h2>
-                    <ReservationsTable rows={rows} onArchive={archive} onRestoreAll={() => setArchived(new Set())} />
+                    <RegionBoundary fallback={(reset) => <RegionError onRetry={reset} />}>
+                      <ReservationsTable rows={rows} onArchive={archive} onRestoreAll={() => setArchived(new Set())} />
+                    </RegionBoundary>
                   </Card>
                 </Reveal>
 

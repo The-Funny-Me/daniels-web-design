@@ -62,6 +62,7 @@ export function useChatScroll(motionOk: boolean): ChatScroll {
   const openRef = useRef(false);
   const pinned = useRef(true);
   const lastTop = useRef(0);
+  const animTop = useRef<number | null>(null);
   const movingDown = useRef(false);
   const touchY = useRef<number | null>(null);
   const snapAnim = useRef<{ stop: () => void } | null>(null);
@@ -73,6 +74,7 @@ export function useChatScroll(motionOk: boolean): ChatScroll {
   const interrupt = useCallback(() => {
     snapAnim.current?.stop();
     snapAnim.current = null;
+    animTop.current = null;
   }, []);
 
   const scrollToBottom = useCallback(
@@ -83,15 +85,27 @@ export function useChatScroll(motionOk: boolean): ChatScroll {
       const target = el.scrollHeight - el.clientHeight;
       if (!smooth || !motionOk) {
         el.scrollTop = target;
+        lastTop.current = target;
         pinned.current = true;
+        setAtEnd(true);
+        setFar(false);
         return;
       }
+      animTop.current = el.scrollTop;
       snapAnim.current = animate(el.scrollTop, target, {
         ...springs.ui,
         onUpdate: (v) => {
+          animTop.current = v;
           el.scrollTop = v;
         },
         onComplete: () => {
+          const end = el.scrollHeight - el.clientHeight;
+          el.scrollTop = end;
+          lastTop.current = end;
+          animTop.current = null;
+          pinned.current = true;
+          setAtEnd(true);
+          setFar(false);
           snapAnim.current = null;
         },
       });
@@ -105,7 +119,8 @@ export function useChatScroll(motionOk: boolean): ChatScroll {
       setOpenState(next);
       acc.current = 0;
       clearTimeout(releaseTimer.current);
-      animate(pull, next ? scrollSpec.panelHeight : 0, motionOk ? springs.ui : fade);
+      if (motionOk) animate(pull, next ? scrollSpec.panelHeight : 0, springs.ui);
+      else pull.set(next ? scrollSpec.panelHeight : 0);
     },
     [motionOk, pull],
   );
@@ -113,7 +128,10 @@ export function useChatScroll(motionOk: boolean): ChatScroll {
   const release = useCallback(() => {
     acc.current = 0;
     clearTimeout(releaseTimer.current);
-    if (!openRef.current) animate(pull, 0, motionOk ? springs.ui : fade);
+    if (!openRef.current) {
+      if (motionOk) animate(pull, 0, springs.ui);
+      else pull.set(0);
+    }
   }, [motionOk, pull]);
 
   const addPull = useCallback(
@@ -130,7 +148,7 @@ export function useChatScroll(motionOk: boolean): ChatScroll {
       }
       acc.current += delta;
       const p = Math.min(acc.current * scrollSpec.resistance, scrollSpec.panelHeight);
-      pull.set(p);
+      if (motionOk) pull.set(p);
       clearTimeout(releaseTimer.current);
       if (p >= scrollSpec.latch) {
         setOpen(true);
@@ -138,19 +156,28 @@ export function useChatScroll(motionOk: boolean): ChatScroll {
       }
       releaseTimer.current = setTimeout(release, scrollSpec.releaseIdleMs);
     },
-    [pull, release, setOpen],
+    [motionOk, pull, release, setOpen],
   );
 
   const onScroll = useCallback(() => {
     const el = scrollerRef.current;
     if (!el) return;
+    if (snapAnim.current && animTop.current !== null && Math.abs(el.scrollTop - animTop.current) > 2) {
+      interrupt();
+    }
     const d = distance(el);
-    movingDown.current = el.scrollTop > lastTop.current;
-    lastTop.current = el.scrollTop;
+    if (el.scrollTop !== lastTop.current) {
+      movingDown.current = el.scrollTop > lastTop.current;
+      lastTop.current = el.scrollTop;
+    }
     pinned.current = d < scrollSpec.snapZone;
     setFar(d > scrollSpec.farFromEnd);
     setAtEnd(d < scrollSpec.snapZone);
     clearTimeout(idleTimer.current);
+    if (openRef.current && !movingDown.current && d > 8) {
+      setOpen(false);
+      return;
+    }
     if (snapAnim.current || openRef.current) return;
     if (d > 1 && d < scrollSpec.snapZone && movingDown.current) {
       idleTimer.current = setTimeout(() => {
@@ -158,7 +185,7 @@ export function useChatScroll(motionOk: boolean): ChatScroll {
         if (e && distance(e) > 1 && distance(e) < scrollSpec.snapZone) scrollToBottom(true);
       }, scrollSpec.snapIdleMs);
     }
-  }, [scrollToBottom]);
+  }, [interrupt, scrollToBottom, setOpen]);
 
   useEffect(
     () => () => {

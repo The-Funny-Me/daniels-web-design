@@ -9,11 +9,11 @@ The approved stack. Agents do not add dependencies, fonts or icon sets that are 
 | Framework | **Next.js (App Router)** | Server Components by default; `"use client"` only where state, effects or animation need it |
 | Language | **TypeScript**, `strict: true` | No `any`; props typed with `interface`; export prop types |
 | Styling | **Tailwind CSS v4** | Config lives in CSS (`@theme`), not `tailwind.config.js` |
-| Primitives | **shadcn/ui on Radix** | Components are copied into `components/ui/` and owned; restyled through tokens |
+| Primitives | **shadcn-style on Radix** | Hand-written components in `components/ui/` following the shadcn pattern (`@radix-ui/react-dialog`, `@radix-ui/react-slot`, `class-variance-authority`); restyled through tokens |
 | Icons | **Phosphor** (`@phosphor-icons/react`) | `weight="thin"` default, `"light"` at ≤16px or for emphasis |
 | UI motion | **Motion** (`motion/react`) | Component states, layout, springs, presence, gestures |
-| Sequence motion | **anime.js v4** | SVG drawing/morphing, scroll choreography, hero timelines |
-| Fonts | `next/font/google`: Cormorant Garamond, Frank Ruhl Libre, Inter, Heebo, JetBrains Mono | Self-hosted by Next; subsets `latin` + `hebrew` |
+| Sequence motion | **anime.js v4** | SVG drawing/morphing (`createDrawable`), scroll choreography, hero timelines, particle bursts |
+| Fonts | **Fontsource** (`@fontsource/cormorant-garamond`, `@fontsource/frank-ruhl-libre`, `@fontsource-variable/inter`, `@fontsource/heebo`, `@fontsource/jetbrains-mono`) | Self-hosted offline-safe packages (replaces `next/font/google` so sandbox builds never depend on network font fetches) |
 | Class merging | `clsx` + `tailwind-merge` via a `cn()` helper | shadcn standard |
 | Variants | `class-variance-authority` | shadcn standard |
 
@@ -41,15 +41,15 @@ Only semantic names exist; there is no raw palette to reach for.
 
 `brand` and `deep` are the Tailwind names for the CSS roles `--ds-accent*` and `--ds-secondary*`; shadcn owns the Tailwind keys `accent` and `secondary`, so the system avoids them.
 
-Other mapped names: `font-display`, `font-sans`, `rounded-pill|card|sheet|editorial`, `shadow-sm|md|lg`, `py-section-xs…xl`, `max-w-app|marketing|reading`, `ease-soft`. Durations, z-index and glass parameters use arbitrary-value syntax with tokens: `duration-(--ds-duration-ui)`, `z-(--ds-z-modal)`, `backdrop-blur-(--ds-glass-blur)`.
+Other mapped names: `font-display`, `font-sans`, `rounded-pill|card|sheet|editorial`, `shadow-sm|md|lg`, `py-section-xs…xl`, `min-h-touch`, `size-touch` (`--ds-space-touch: 44px`), `max-w-app|marketing|reading`, `ease-soft`. Durations, z-index and glass parameters use arbitrary-value syntax with tokens: `duration-(--ds-duration-ui)`, `z-(--ds-z-modal)`, `backdrop-blur-(--ds-glass-blur)`.
 
 ## shadcn/ui rules
 
-- Add components with `npx shadcn add <name>`, then **restyle in place**: swap their default radii and colors to roles (`rounded-pill` for buttons and inputs, `rounded-card` for cards, glass for popovers, dialogs and sheets).
-- Buttons: pill, `bg-brand-solid text-on-brand` primary, `bg-deep-solid text-on-deep` secondary, `border-hairline-strong` quiet. Press feedback per UI rule U24.
-- Dialog, Sheet, Popover, DropdownMenu, Toast (Sonner) use the glass recipe; the Dialog and Sheet backdrop uses `bg-scrim` plus `backdrop-blur-(--ds-scrim-blur)`.
-- Keep Radix's accessibility behavior (focus trap, ARIA). Never replace a Radix primitive with a div.
-- Toasts: Sonner, restyled to glass, bottom-`start` positioned; undo toast 8s (UX rule X6).
+- Components in `src/components/ui/` are hand-written in the shadcn pattern (not CLI-generated) and styled directly with semantic token roles (`rounded-pill` for buttons and inputs, `rounded-card` for cards, `.glass` for popovers, dialogs and sheets).
+- Buttons: pill, `bg-brand-solid text-on-brand` primary, `bg-deep-solid text-on-deep` secondary, `border-control bg-surface-raised` quiet. Press feedback per UI rule U24; `loading` locks button `width` and `height` (`opacity-0` label + centered `<Spinner />` overlay).
+- Dialog, Sheet (`Overlay` / `GlassSheet`) and Toast (`Sonner`) use the `.glass` recipe; the Dialog and Sheet backdrop uses `bg-scrim` plus `backdrop-blur-(--ds-scrim-blur)`.
+- Keep Radix's accessibility behavior (focus trap, ARIA) plus explicit focus restoration to the triggering element on close. Never replace a Radix primitive with a div.
+- Toasts: Sonner configured with `toastOptions={{ unstyled: true }}` so every toast renders our own `.glass` markup (`toaster.tsx`), bottom-`start` positioned; undo toast 8s with a draining hairline (`--drain-origin`).
 
 ## Library boundaries
 

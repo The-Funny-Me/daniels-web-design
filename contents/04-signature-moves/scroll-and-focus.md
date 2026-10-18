@@ -6,9 +6,9 @@ Principle: **scroll behavior is a tool to highlight the main focus element, neve
 
 Applies to marketing surfaces and any element designated as a *main focus* (a hero, a featured section, a product reveal).
 
-- **Library:** Lenis (the single approved extra dependency) for inertial scrolling on marketing pages; Motion/anime.js `onScroll` for reveals tied to scroll position.
-- **Parameters:** `lerp: 0.1`, `duration` ≈ 1.1s, `smoothWheel: true`, `syncTouch: false` (native feel on touch).
-- **Focus snapping:** main focus sections use `scroll-snap-type: y proximity` (never `mandatory`); a section "settles" into view when the user stops near it. Proximity keeps free scrolling intact.
+- **Library:** Lenis (the single approved extra dependency) for inertial scrolling on marketing pages (`/landing` only); Motion/anime.js `onScroll` for reveals tied to scroll position.
+- **Parameters:** `lerp: 0.09`, `smoothWheel: true` (native feel on touch).
+- **No CSS `scroll-snap` with Lenis:** Do **not** combine CSS `scroll-snap-type` with Lenis on the same scroll container — they fight each other. Use Lenis on `/landing` without CSS scroll-snap; if native scroll is used without Lenis, `scroll-snap-type: y proximity` (never `mandatory`) is allowed.
 - **Highlighting:** as a main-focus element enters, it comes to full opacity and a gentle scale of 0.98→1; neighbors dim to 0.55 opacity. Never dim below AA: dimming is applied to decorative neighbors and to *non-text* layers only, or reverts when the user stops.
 - **Elsewhere:** apps and dashboards use **native scroll**. Lists, tables, forms, modals: native.
 - **Reduced motion:** Lenis disabled; native scroll; reveals are plain fades; no snap.
@@ -25,15 +25,18 @@ Chat scrolls **natively when scrolling up** through history. At the bottom, the 
 3. **Past the end (reveal)**: with the chat at the bottom, a *further* downward scroll or drag (an intentional over-scroll of about 72px of accumulated delta, resisted like a rubber band) **reveals a panel of relevant options** (suggested replies, actions, related items) that slides up beneath the last message. It is revealed by the user's gesture, not auto-opened.
 4. **Dismiss**: scroll up, `Esc`, or tapping elsewhere; the panel collapses with the same spring.
 
-### Parameters
+### Parameters (`scrollSpec` in `src/hooks/use-chat-scroll.ts`)
 
-| | |
-|---|---|
-| Snap zone | last message bottom within 80px of the visible bottom |
-| Reveal threshold | 72px accumulated over-scroll delta, with resistance factor 0.4 |
-| Reveal panel | glass, `card` radius, max 4 options, each a pill |
-| Spring | `ui` {380, 40} for snap and reveal; no overshoot |
-| Library | Motion for the spring; a thin scroll controller (`wheel`, `touchmove`, `scroll` listeners; `overscroll-behavior: contain`) |
+| Parameter | Value | Meaning |
+|---|---|---|
+| `snapZone` | `80` px | Within this distance of the end, the view counts as pinned to the end (follows streaming, snaps on downward idle) |
+| `snapIdleMs` | `140` ms | Scroll must go quiet for this long while moving downward within `snapZone` before the snap fires |
+| `farFromEnd` | `240` px | Further than this from the end shows the "Latest" jump pill |
+| `resistance` | `0.4` | Over-scroll rubber-band factor (`visualPull = accumulatedDelta × 0.4`) |
+| `latch` | `72` px | Visual pull at which the options panel latches open (`180px` raw delta) |
+| `panelHeight` | `96` px | Height of the options panel revealed beneath the messages |
+| `releaseIdleMs` | `160` ms | Idle timeout before an unlatched pull springs back to `0` |
+| Spring | `springs.ui` `{ stiffness: 380, damping: 40, mass: 1 }` | Critically damped spring for snap and panel reveal; no overshoot |
 
 ### Rules
 

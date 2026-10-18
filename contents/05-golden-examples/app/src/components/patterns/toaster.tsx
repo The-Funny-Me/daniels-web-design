@@ -13,8 +13,8 @@ export function AppToaster() {
       dir={dir}
       visibleToasts={3}
       gap={8}
-      offset={{ bottom: 16, left: 16, right: 16 }}
-      mobileOffset={{ bottom: 80, left: 16, right: 16 }}
+      offset={{ bottom: 16, left: 16, right: 16 }} // ds-allow-physical
+      mobileOffset={{ bottom: 80, left: 16, right: 16 }} // ds-allow-physical
       toastOptions={{ unstyled: true }}
     />
   );

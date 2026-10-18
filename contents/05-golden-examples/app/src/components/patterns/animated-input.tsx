@@ -53,7 +53,7 @@ export function AnimatedInput({ examples, mode = "text", className, value, defau
         <span className="truncate">
           {view.text}
         </span>
-        {view.caret && <span data-anim className="ms-px block h-5 w-px shrink-0 bg-brand-ui" style={{ animation: "blink 1s steps(1) infinite" }} />}
+        {view.caret && <span data-anim className="ms-px block h-4 w-px shrink-0 bg-brand-ui" style={{ animation: "blink 1s steps(1) infinite" }} />}
       </span>
     </div>
   );

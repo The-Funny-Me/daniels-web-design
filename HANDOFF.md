@@ -210,4 +210,20 @@ Contents of the zip, for reference:
 - `03-libraries/stack.md`
 - `04-signature-moves/`: `README.md`, `accent-intensity.md`, `animated-inputs.md`, `interactions.md`, `scroll-and-focus.md`, `type-moves.md`
 - `05-golden-examples/`: `README.md`, `landing.md`, `auth.md`, `chat.md`, `dashboard.md`
-- `05-golden-examples/app/`: `package.json`, `package-lock.json`, `tsconfig.json`, `next.config.ts`, `postcss.config.mjs`, `.gitignore`, `scripts/{sync-tokens,screenshot-matrix}.mjs`, and `src/` with `app/{layout,page,globals.css}`, `app/{auth,chat,dashboard}/page.tsx`, `components/{ui,patterns,chat,dashboard}/*`, `hooks/*`, `lib/{cn,motion,dashboard-data}.ts`, `lib/i18n/*`, `design/*` (generated)
+- `05-golden-examples/app/`: `package.json`, `package-lock.json`, `tsconfig.json`, `next.config.ts`, `postcss.config.mjs`, `.gitignore`, `scripts/{sync-tokens,screenshot-matrix,check-raw-values,verify-behaviour}.mjs`, and `src/` with `app/{layout,page,globals.css}`, `app/{landing,auth,chat,dashboard}/page.tsx`, `components/{ui,patterns,chat,dashboard}/*`, `hooks/*`, `lib/{cn,motion,dashboard-data}.ts`, `lib/i18n/*`, `design/*` (generated)
+
+## 17. Handoff Completion Log (Steps 6–8 + Good Design Anatomy + Unpack Packaging)
+
+1. **Completed Section 6A fixes & hardening:**
+   - Fixed SSR/client hydration date mismatch on `/chat` using `ready` from `useDesign()`.
+   - Added `Escape` and click-to-dismiss for `chat.open`, plus `role="region"` on the options panel.
+   - Fixed `use-chat-scroll.ts` (`scrollToBottom` state sync, duplicate native scroll events preserving `movingDown`, interrupting active spring animations on external scroll).
+   - Added `visibilitychange` pause in `use-cycler.ts` and 8pt-compliant `h-4` caret height in `animated-input.tsx`.
+   - Locked `Button` dimensions during `loading` (`opacity-0` label in flow + centered overlay `<Spinner />`).
+   - Added explicit focus restoration (`triggerRef`) in `Overlay` / `GlassSheet` / `ConfirmDialog` and fast exit transition so chained modals open cleanly.
+   - Wrapped dashboard regions in `RegionBoundary`, connected the `Simulate failure` toggle to inline `RegionError` with Retry recovery, and added `relative` to `ReservationsTable`'s `overflow-x-auto` wrapper to prevent `.sr-only` `<th>` overflow at 390px mobile.
+2. **Completed Section 6B (`/landing`):** Built `src/app/landing/page.tsx` with sticky glass nav pill, Lenis smooth scroll, Hero (`01`), three asymmetric chapters (`02..04`) with in-system SVG art and scroll focus, 4-fact `GlowCard` detail row with `<bdi>` figures, centered display quote, and sunken closing CTA with breathing `RadialLight`.
+3. **Completed Section 6C (`check-raw-values.mjs`):** Added `scripts/check-raw-values.mjs` (`npm run check:raw`); `0` violations across `src/`.
+4. **Completed Section 6D & 7 (Playwright screenshot matrix + behavioural verification + docs):** Verified all 5 routes across desktop (`1280×860`) and mobile (`390×844`) pack/theme/direction combinations (`0` console errors, `0` horizontal overflow) and passed all 5 automated Playwright behavioural suites (`npm run verify:behaviour`).
+5. **Added Good Design Anatomy:** Documented in `SKILL.md`, `02-rules/design-anatomy.md`, `02-rules/ui-rules.md`, `02-rules/ux-rules.md`, `04-signature-moves/*`, and interactive Chapter 05 in `preview.html`.
+6. **Added `unpack.sh` & `contents/` wrapper:** Packaged `contents/`, `preview.html`, `README.md`, and `unpack.sh` for passwordless installation into `~/.cursor/skills/`.

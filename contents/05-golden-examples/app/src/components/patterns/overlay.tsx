@@ -3,10 +3,10 @@
 import * as Dialog from "@radix-ui/react-dialog";
 import { X } from "@phosphor-icons/react";
 import { AnimatePresence, motion } from "motion/react";
-import type { ComponentProps, ReactNode } from "react";
+import { useEffect, useRef, type ComponentProps, type ReactNode } from "react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/cn";
-import { fade, springs } from "@/lib/motion";
+import { durations, ease, fade, springs } from "@/lib/motion";
 import { useDesign } from "./design-provider";
 
 interface OverlayProps {
@@ -42,9 +42,25 @@ export function Overlay({
   showClose = true,
 }: OverlayProps) {
   const { t, motionOk } = useDesign();
+  const triggerRef = useRef<HTMLElement | null>(null);
+
+  useEffect(() => {
+    if (open) {
+      triggerRef.current = document.activeElement instanceof HTMLElement ? document.activeElement : null;
+    } else if (triggerRef.current && document.contains(triggerRef.current)) {
+      const target = triggerRef.current;
+      triggerRef.current = null;
+      requestAnimationFrame(() => {
+        if (document.contains(target)) target.focus();
+      });
+    }
+  }, [open]);
+
   const hidden = motionOk ? { opacity: 0, y: 12, filter: "blur(8px)" } : { opacity: 0 };
   const shown = motionOk ? { opacity: 1, y: 0, filter: "blur(0px)" } : { opacity: 1 };
-  const exit = motionOk ? { opacity: 0, y: 8, filter: "blur(4px)" } : { opacity: 0 };
+  const exit = motionOk
+    ? { opacity: 0, y: 8, filter: "blur(4px)", transition: { duration: durations.ui, ease: ease.soft } }
+    : { opacity: 0, transition: fade };
 
   const contentProps: Partial<ComponentProps<typeof Dialog.Content>> = {
     onOpenAutoFocus: (e) => {

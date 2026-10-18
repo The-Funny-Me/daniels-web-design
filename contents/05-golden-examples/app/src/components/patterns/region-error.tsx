@@ -35,8 +35,8 @@ export class RegionBoundary extends Component<BoundaryProps, { failed: boolean }
   static getDerivedStateFromError() {
     return { failed: true };
   }
-  componentDidCatch(error: Error, info: ErrorInfo) {
-    console.error("region failed", error, info.componentStack);
+  componentDidCatch(_error: Error, _info: ErrorInfo) {
+    /* Contained error boundary: the fallback renders inline recovery without crashing the page. */
   }
   reset = () => this.setState({ failed: false });
   render() {

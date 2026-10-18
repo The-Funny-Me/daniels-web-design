@@ -4,36 +4,43 @@ Coding agents pattern-match. A golden example is a small set of pristine, fully 
 
 ## Status
 
-**Briefs and acceptance criteria only. The component code is not built yet**, by agreement: you review the folder, docs and token generator first, and approve before the examples are written. This directory defines exactly what will be built.
+**Complete and verified.** The Next.js 16 + React 19 + Tailwind v4 reference application lives in `05-golden-examples/app/` with all five routes (`/`, `/landing`, `/auth`, `/chat`, `/dashboard`), automated raw-value enforcement (`npm run check:raw`), screenshot matrix (`scripts/screenshot-matrix.mjs`), and Playwright behavioural verification (`npm run verify:behaviour`).
 
-## The four examples
+## Running the golden examples
 
-| Brief | Showcases |
-|---|---|
-| `landing.md` | Hero, ghost numerals, tracked labels, scroll-focus, accent-intensity ladder, metal hairlines |
-| `auth.md` | Animated inputs, password dotting (LTR/RTL), overlay physics, inline error recovery |
-| `chat.md` | Native up-scroll, bottom snap, over-scroll reveal, glass composer, streaming rules |
-| `dashboard.md` | Cards, table, adaptive loading, hybrid destructive actions, glass + tint depth |
+```bash
+cd 05-golden-examples/app
+npm install
+npm run typecheck
+npm run check:raw
+npm run build
+npx next start -p 3100
+```
 
-## Requirements shared by all four
+### Routes
 
-1. **Stack:** Next.js App Router, TypeScript strict, Tailwind v4, shadcn/ui on Radix, Phosphor thin/light, Motion + anime.js as bounded in `03-libraries/stack.md`.
-2. **Default pack** (`champagne-wine`), built with a **runtime switcher** in a shared `DesignSwitcher` pattern component: pack (all 8), light/dark, **LTR/RTL**. Swapping any of these restyles every example without touching a component.
-3. **Logical properties everywhere.** Each example ships with Hebrew sample content through the `t()` dictionary and a live LTR/RTL toggle.
-4. **Zero raw values:** the grep checklist in `02-rules/ui-rules.md` returns nothing.
-5. **Motion discipline:** one hero move per page, budget from `04-signature-moves/README.md`; reduced-motion state verified.
-6. **Verification:** `tsc --noEmit`, lint, and a screenshot matrix for the default pack in light/dark × LTR/RTL, plus two other packs, are produced when the examples are built.
+| Route | Brief | Showcases |
+|---|---|---|
+| `/` | — | Index of the four golden examples with pack-tinted `RadialLight` and `GlowCard` links |
+| `/landing` | `landing.md` | Sticky glass nav, Lenis smooth scroll, Hero with `GhostNumeral` `01` & level-4 `AccentBurst`, `.hairline-metal`, 3 asymmetric chapters (`02`–`04`) with abstract SVG visuals, 4 `<bdi>` fact `GlowCard`s, statement quote, closing CTA |
+| `/auth` | `auth.md` | `AnimatedInput` with password dotting (LTR/RTL), button dimension lock on loading, inline blur validation (`aria-describedby`), contained `RegionError` on `"fail..."` email, `GlassSheet` → typed-phrase `ConfirmDialog` |
+| `/chat` | `chat.md` | 201 messages, native upward scroll, downward idle snap within `80px`, rubber-band pull past bottom (`72px` latch) to reveal suggestions panel, streaming + unread pill with `.shiver` |
+| `/dashboard` | `dashboard.md` | Stat cards, hand-built SVG `LineChart` (emphasis form, keyboard stepping, table view toggle), sortable `ReservationsTable`, optimistic archive with 8s `undoToast`, adaptive `LoadingGate` (`slow` & `fail` switches), `RegionBoundary` |
 
-## Shared pattern components (built once, reused)
+### Runtime switcher & URL query parameters
 
-`DesignSwitcher` · `AnimatedInput` · `GlassPanel` · `GlassSheet` · `ScrimDialog` · `Toast` (Sonner, glass) · `Loader` (adaptive) · `GhostNumeral` · `Label` (tracked) · `AccentBurst` (levels 1–4) · `Reveal` (staggered fade-in) · `ErrorRegion` (inline recovery with Retry)
+Every page includes the floating `DesignSwitcher` (bottom-`start`) and accepts URL query parameters on load:
+`?pack=<id>&theme=light|dark|system&dir=ltr|rtl&motion=on|off`
 
-## Order of work (after your approval)
+### Verification scripts
 
-1. Project scaffold + token wiring + switcher + `t()` and direction helpers
-2. Shared pattern components, each with a tiny isolated demo route
-3. Auth → Dashboard → Chat → Landing (increasing animation complexity)
-4. Verification pass and screenshot matrix; update `SKILL.md` status
+```bash
+# Screenshot + console error + horizontal overflow matrix
+node scripts/screenshot-matrix.mjs shots /landing full
+
+# Full Playwright interactive behaviour suite
+npm run verify:behaviour
+```
 
 ## References
 
