@@ -1,3 +1,5 @@
+> Agents: do not open this file unless `SKILL.md` routed you here. The operating rules are already in `SKILL.md`.
+
 # Golden example: Chat screen
 
 Goal: prove the scroll model. Native upward scrolling, a snap at the bottom, and a deliberate over-scroll that reveals options.

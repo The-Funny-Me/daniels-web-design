@@ -1,3 +1,5 @@
+> Agents: do not open this file unless `SKILL.md` routed you here. The operating rules are already in `SKILL.md`.
+
 # 04 · Signature moves
 
 The micro-details that make the work recognizable. Each move is specified with parameters, states, accessibility, RTL behavior and reduced-motion behavior, so an agent can build it without guessing.

@@ -1,3 +1,5 @@
+> Agents: do not open this file unless `SKILL.md` routed you here. The operating rules are already in `SKILL.md`.
+
 # Accent intensity
 
 **The more an item is accented, the more noticeable its effect.** Effects are a ladder: the importance of the element (not the designer's mood) picks the rung. Effects are drawn from the pack's `fx-1/2/3` and `glow` tokens, so they re-tint automatically.

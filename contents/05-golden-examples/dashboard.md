@@ -1,3 +1,5 @@
+> Agents: do not open this file unless `SKILL.md` routed you here. The operating rules are already in `SKILL.md`.
+
 # Golden example: App dashboard
 
 Goal: prove density without losing the velvet feel: cards, a table, the loading model, the destructive-action hybrid, and glass + tint depth in a working surface.

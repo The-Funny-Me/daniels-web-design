@@ -1,3 +1,5 @@
+> Agents: do not open this file unless `SKILL.md` routed you here. The operating rules are already in `SKILL.md`.
+
 # 02 · Good Design Anatomy
 
 The structural physics, interaction mechanics, and visual polish that separate considered interfaces from default templates. Every component and page built with this skill must honor these four pillars.

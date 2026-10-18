@@ -1,3 +1,5 @@
+> Agents: do not open this file unless `SKILL.md` routed you here. The operating rules are already in `SKILL.md`.
+
 # Golden example: Landing page
 
 Goal: the feeling of the folder in one scrollable page. Few elements, each with its own square of silence.

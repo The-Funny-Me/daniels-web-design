@@ -1,6 +1,8 @@
 # 05 · Golden examples
 
-Coding agents pattern-match. A golden example is a small set of pristine, fully working components and pages that fix import structure, typing and visual aesthetic. **Pointing an agent at these files is how the system stays consistent.**
+> Agents: start at `api.md`. Open one brief only when `SKILL.md` names that page. Do not read `app/src` until you are copying a single component.
+
+Coding agents pattern-match. A golden example is a small set of pristine, fully working components and pages that fix import structure, typing and visual aesthetic. The index of those components is `api.md`.
 
 ## Status
 

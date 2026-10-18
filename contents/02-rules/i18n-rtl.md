@@ -1,3 +1,5 @@
+> Agents: do not open this file unless `SKILL.md` routed you here. The operating rules are already in `SKILL.md`.
+
 # 02 · Direction, language and RTL
 
 Hebrew (RTL) and English (LTR) are first-class. Direction support is not a final polish pass; it is a property of every component from the first line.

@@ -1,3 +1,5 @@
+> Agents: do not open this file unless `SKILL.md` routed you here. The operating rules are already in `SKILL.md`.
+
 # References
 
 Inspiration sources you supplied, and **what I was actually able to verify** about each. I read pages as text and metadata only; I did not see rendered visuals for any of them. Where a row says "unverified", nothing about that design's look has been taken from it. Please add screenshots to `05-golden-examples/references/` and the notes below can be upgraded from "inferred" to "observed".

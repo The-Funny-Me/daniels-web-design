@@ -1,3 +1,5 @@
+> Agents: do not open this file unless `SKILL.md` routed you here. The operating rules are already in `SKILL.md`.
+
 # Animated inputs
 
 Inputs show cycling example text instead of a single static placeholder. Examples are typed, held, erased, then the next one is typed. Passwords demonstrate masking: typed as readable text, then converted to dots, then dotted out.

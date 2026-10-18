@@ -1,3 +1,5 @@
+> Agents: do not open this file unless `SKILL.md` routed you here. The operating rules are already in `SKILL.md`.
+
 # 03 · Stack and libraries
 
 The approved stack. Agents do not add dependencies, fonts or icon sets that are not listed here. If something is missing, stop and ask.

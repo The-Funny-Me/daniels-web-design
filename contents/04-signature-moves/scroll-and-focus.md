@@ -1,3 +1,5 @@
+> Agents: do not open this file unless `SKILL.md` routed you here. The operating rules are already in `SKILL.md`.
+
 # Scroll and focus
 
 Principle: **scroll behavior is a tool to highlight the main focus element, never a decoration.** It must never hijack in a way that traps the user or breaks keyboard and assistive-tech access.

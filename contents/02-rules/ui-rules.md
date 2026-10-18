@@ -1,3 +1,5 @@
+> Agents: do not open this file unless `SKILL.md` routed you here. The operating rules are already in `SKILL.md`.
+
 # 02 · UI rules
 
 Non-negotiable. Each rule is checkable; if an agent cannot verify a rule from the code it wrote, it has not finished.

@@ -1,3 +1,5 @@
+> Agents: do not open this file unless `SKILL.md` routed you here. The operating rules are already in `SKILL.md`.
+
 # Golden example: Auth screen
 
 Goal: prove the inputs, the overlay physics and the error philosophy in the smallest surface.

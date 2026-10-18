@@ -1,3 +1,5 @@
+> Agents: do not open this file unless `SKILL.md` routed you here. The operating rules are already in `SKILL.md`.
+
 # 01 · Fundamentals
 
 The numbers behind every design. Nothing here is a suggestion: if a value is not a token, it is not allowed.

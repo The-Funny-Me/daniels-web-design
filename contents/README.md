@@ -16,6 +16,8 @@ cd web-design
 
 `./unpack.sh` unpacks `contents/` directly into `~/.cursor/skills/web-design` (and `~/.cursor/skills/Daniels-web-design` for backwards compatibility), excluding build caches (`node_modules`, `.next`). Once unpacked, invoke `/web-design` directly inside Cursor.
 
+`SKILL.md` is the operating spec: pack list, roles, spacing, motion, anatomy, and the delivery checklist. An agent opens one extra file only when that spec names it (`05-golden-examples/api.md` to reuse a component, one page brief, or one signature-move sheet). It does not read `tokens.css`, `palette.md`, `preview.html`, or the example app source into context.
+
 ---
 
 ## Repository Structure
@@ -56,6 +58,7 @@ web-design/
     │   └── type-moves.md       # Ghost numerals, tracked labels, serif headlines
     └── 05-golden-examples/
         ├── README.md           # Golden examples architecture & verification commands
+        ├── api.md              # Component index. Open this instead of the app tree.
         ├── landing.md · auth.md · chat.md · dashboard.md
         └── app/                # Complete Next.js 16 reference app (/landing, /auth, /chat, /dashboard)
 ```
