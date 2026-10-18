@@ -2,7 +2,7 @@
 /**
  * verify-behaviour.mjs
  *
- * Automated Playwright verification of all interactive behaviours in HANDOFF.md sections 5.3 & 7.3:
+ * Automated Playwright verification of all interactive behaviours across the golden examples:
  * 1. /auth: animated placeholders stop on focus & resume on blur, password dotting, show/hide toggle,
  *    blur validation with aria-describedby, "fail..." email -> contained RegionError -> Retry,
  *    Button Dimension Lock on loading states, forgot-password sheet, settings sheet -> typed-phrase

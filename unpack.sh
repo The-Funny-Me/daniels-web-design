@@ -48,7 +48,7 @@ install_skill_to() {
   )
 
   # Ensure top-level skill metadata and preview.html are always present at the skill root
-  for top_file in SKILL.md README.md references.md HANDOFF.md preview.html; do
+  for top_file in SKILL.md README.md references.md preview.html; do
     if [ -f "${SCRIPT_DIR}/${top_file}" ]; then
       cp "${SCRIPT_DIR}/${top_file}" "${dest}/${top_file}"
     fi

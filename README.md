@@ -26,7 +26,6 @@ web-design/
 ├── preview.html                # Standalone zero-dependency interactive showcase (8 packs + physics)
 ├── README.md                   # Repository overview & quick-start guide
 ├── SKILL.md                    # Primary Cursor skill definition & workflow
-├── HANDOFF.md                  # Architecture & build completion notes
 ├── references.md               # Sourced design references & verified guidelines
 ├── LICENSE                     # MIT License
 └── contents/                   # Unpackable skill payload copied to ~/.cursor/skills/
