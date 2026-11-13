@@ -1,6 +1,6 @@
 // Screenshot matrix + console/overflow check against a running server (default http://localhost:3100).
 // usage:  node scripts/screenshot-matrix.mjs <outDir> <path> [full]
-// env:    BASE=http://localhost:3100  CONFIGS="pack:theme:dir,pack:theme:dir"  W=1280 H=860  WAIT=2600
+// env:    BASE=http://localhost:3100  CONFIGS="pack:theme:dir,..." (default: 2 packs x light/dark x LTR/RTL)  W=1280 H=860  WAIT=2600
 //         PLAYWRIGHT_MODULE=/abs/path/to/playwright/index.mjs   CHROMIUM_PATH=/abs/path/to/chromium (optional)
 // The app reads ?pack=&theme=&dir=&motion= on load, so every configuration is one URL.
 import fs from 'node:fs';
@@ -8,7 +8,7 @@ import fs from 'node:fs';
 const [, , out = 'shots', page = '/', full] = process.argv;
 const { chromium } = await import(process.env.PLAYWRIGHT_MODULE || 'playwright');
 const base = process.env.BASE || 'http://localhost:3100';
-const configs = (process.env.CONFIGS || 'champagne-wine:light:ltr,champagne-wine:dark:rtl').split(',').map((s) => s.split(':'));
+const configs = (process.env.CONFIGS || 'champagne-wine:light:ltr,champagne-wine:dark:rtl,navy-cream-green:light:rtl,navy-cream-green:dark:ltr').split(',').map((s) => s.split(':'));
 fs.mkdirSync(out, { recursive: true });
 
 const browser = await chromium.launch(process.env.CHROMIUM_PATH ? { executablePath: process.env.CHROMIUM_PATH } : {});

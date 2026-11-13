@@ -16,7 +16,8 @@ Ids follow the owner's list. Motion uses `lib/motion.ts` tokens; reduced motion 
 - **C40 Useful motion:** animate only what informs (added, saved, moved, failed, where it went). No decorative loops.
 
 ## Laws
-- **C6 Fitts / C8 Hit areas:** ≥44×44 (`min-h-touch`), whole row/card clickable; primary and frequent targets bigger and closer.
+- **C6 Fitts:** primary and frequent targets are bigger and closer to where the pointer or thumb already is.
+- **C8 Bigger hit areas:** ≥44×44 (`min-h-touch`), the whole row or card clickable (U22).
 - **C10 Hick:** 1 primary + ≤2 secondary actions per view, ≤7 top nav items; the rest behind menus or steps.
 - **C12 Miller:** chunks of ~5–7 (7±2); codes, phones and cards split into 3–4 digit groups.
 - **C14 Doherty:** visible response <400ms, press state <120ms, optimistic toggles, loaders per the 300/600ms rule.
@@ -37,7 +38,7 @@ Ids follow the owner's list. Motion uses `lib/motion.ts` tokens; reduced motion 
 - **C28 Nested radius:** inner = outer − padding (`card` 24, padding 12 → 12); never inner ≥ outer.
 - **C29 Design system:** tokens, roles and existing primitives (`05-golden-examples/api.md`) only.
 - **C30 Text contrast:** body ≥4.5:1, large/UI ≥3:1; body `text-ink`/`text-ink-2`; `text-ink-3` only for meta, never on tints.
-- **C31 Show the product:** real UI, screenshots or output; no abstract blobs or stock photos.
+- **C31 Show the product:** real UI, screenshots or output when a product exists; otherwise abstract in-system visuals (landing brief), never stock photos.
 - **C32 Wrap headlines:** `text-balance` on headings, `text-pretty` on paragraphs; no orphan words; no manual `<br>`.
 - **C33 Enlarge the main feature:** the key element (hero visual, main stat, primary input) is ~2× the next one.
 - **C34 Align by eye:** icons to cap height, play glyphs 1–2px inline-end, hanging quotes, round shapes slightly larger.

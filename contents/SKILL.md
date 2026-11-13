@@ -1,112 +1,53 @@
 ---
 name: web-design
-description: Build web UI (landing pages, apps, dashboards, auth, chat) in a luxury, minimal, spacious style using a token-driven design system with swappable palette packs, strict UI/UX rules, Good Design Anatomy physics, a fixed Next.js + Tailwind v4 + shadcn/ui stack, and signature motion. Use for any request to design, build, restyle or review front-end UI.
+description: Design, build, restyle or review web UI (landing, app, dashboard, auth/forms, chat) in a calm luxury style on this skill's tokens, rules and Next.js + Tailwind v4 + shadcn stack. Not for backend, native apps, email or print.
 ---
 
 # /web-design
 
-Luxury, spacious, token-driven UI. Feeling: white velvet sheets in a golden hotel room. Few elements, each with room, one considered detail. Calm springs, quiet glass, hairlines, serif display.
+Luxury, spacious, token-driven UI: white velvet sheets in a golden hotel room. Few elements, each with room, one considered detail. Calm springs, quiet glass, hairlines, serif display.
 
-This file is the operating spec. Apply it as written. Open another file only when the router names it.
+This file is the router. Read it whole, then open only the files your task row names. Rule ids are stable; cite them in reviews: `U` `02-rules/ui-rules.md`, `X` `02-rules/ux-rules.md`, `C` `02-rules/craft-checklist.md`, `R` `02-rules/i18n-rtl.md`.
 
-## Do not load
+Never read into context (import or run them): generated tokens in `01-fundamentals/` (`tokens.css`, `tokens.json`, `tailwind-theme.css`, `shadcn-bridge.css`, `palette.md`, `contrast-report.json`, `preview.html`), `05-golden-examples/app/` beyond the one file you copy, `references.md`.
 
-Never read these into context. Import or run them:
+## 1. Before building
 
-- `01-fundamentals/tokens.css`, `tokens.json`, `tailwind-theme.css`, `shadcn-bridge.css`, `contrast-report.json`, `preview.html`, and their copies (`05-golden-examples/app/src/design/`, repo root)
-- `01-fundamentals/palette.md` (generated swatches). Pack choice uses the table below.
-- `05-golden-examples/app/` source, `node_modules`, `.next`, `package-lock.json`, i18n dictionaries
-- `README.md`, `references.md`
+1. **Pack.** Default `champagne-wine`. If the user named none, offer 2–3 in your first message: `champagne-wine` (ivory, champagne, wine), `wine-gold` (evening), `navy-cream-green`, `brown-navy-lightblue` (paper, espresso, sky), `deep-green-brown` (felt, leather), `silver-white` (cool clinical), `monochrome` (tonal), `toxic-white-orange` (lime is decorative). Set `<html data-pack="…" data-theme="light|dark" dir="ltr|rtl" lang="en|he">`.
+2. **Tokens.** Import the generated CSS (wiring in `03-libraries/stack.md`); never paste it.
+3. **Read** `02-rules/craft-checklist.md` once, then your task row.
 
-Do not open every file in `02-rules/` or `04-signature-moves/` "to be safe".
+| Task | Open | Example route |
+|---|---|---|
+| Landing / marketing | `05-golden-examples/landing.md`, `04-signature-moves/type-moves.md` | `/landing` |
+| Dashboard, tables, charts | `05-golden-examples/dashboard.md`, `02-rules/ux-rules.md` | `/dashboard` |
+| Forms, auth, validation | `05-golden-examples/auth.md`, `02-rules/ux-rules.md`; cycling placeholder: `04-signature-moves/animated-inputs.md` | `/auth` |
+| Chat, live feed, smooth scroll | `05-golden-examples/chat.md`, `04-signature-moves/scroll-and-focus.md` | `/chat` |
+| Menus, popovers, modals, toasts | `02-rules/ux-rules.md`; safe-triangle and timer details: `02-rules/design-anatomy.md` | — |
+| Motion, hover, glint, overlays | `04-signature-moves/interactions.md`; level 2–4 accent: `04-signature-moves/accent-intensity.md` | — |
+| Hebrew, RTL, i18n | `02-rules/i18n-rtl.md` | any, `?dir=rtl` |
+| Tokens, palette, new pack | `01-fundamentals/foundations.md`; edit `core.json` or `palettes/<id>.json`, run `node 01-fundamentals/scripts/build-tokens.mjs`, read only FAIL lines | — |
+| Dependency or CSS wiring | `03-libraries/stack.md` | — |
+| Reusing a component | `05-golden-examples/api.md`, then that one source file | any |
+| Review or audit | `02-rules/ui-rules.md`, `02-rules/ux-rules.md`; report by id | — |
 
-## Pack (ask once)
+## 2. While building (every task)
 
-Default `champagne-wine`. If the user did not name a pack, offer 2–3 of these in the first message, then continue with their pick or the default.
+- **Tokens (U1, U13).** No hex, `rgb(`, `hsl(`, `oklch(`, Tailwind palette class, or raw duration, radius or shadow. Roles: `bg-canvas` `bg-surface|surface-raised|surface-sunken` `text-ink|ink-2|ink-3` `border-hairline|hairline-strong|control`. Accent is `brand-*`: `bg-brand-solid` + `text-on-brand`, text `text-brand-text`, icons/rings/charts `text-brand-ui` / `ring-focus`; raw `bg-brand` is decorative. Secondary `deep-*`. Status `text-success|warning|danger|info` + `bg-*-bg` + `border-*-border`, always with an icon or words (U12). Token values: `duration-(--ds-duration-ui)`, `z-(--ds-z-modal)`.
+- **Space (U4–U7).** Tailwind steps 1, 2, 3, 4, 6, 8, 12, 16, 24, 32 only; `py-section-xs…xl` between sections; `max-w-app|marketing|reading`. Logical properties only (`ms- me- ps- pe- start- end- text-start border-s rounded-s-*`); `ml- mr- pl- pr- left- right- text-left text-right` are banned.
+- **Shape, depth (U14–U16a).** `rounded-pill` controls, `rounded-card` cards, `rounded-sheet` leading corners, `rounded-sm` small, `rounded-editorial` images. Cards: tint + hairline + `shadow-sm|md`. `.glass` only on overlays, never glass on glass. Dark depth is canvas → surface → surface-raised.
+- **Type (U10, U11, U17–U19).** `font-display` from `text-2xl` (28px), weight 400, never bold; smaller headings sans. Labels `text-2xs` uppercase tracked, Latin only. Figures `font-sans tabular-nums`. No centered body over two lines. Text on imagery sits on `scrim` or glass. Ghost numerals `text-ink` at ≤0.08 opacity, `aria-hidden`.
+- **Icons (U20, U21).** Phosphor `thin`, `light` ≤16px; `aria-hidden` unless the icon is the control, then a name and a 44px target. Mirror arrows and chevrons in RTL, not play, check, logo or clock.
+- **Motion (U24).** Only from `lib/motion.ts` (`durations`, `stagger`, `ease`, `springs.overlay|ui|hero`). Overlays: `springs.overlay`, ~12px rise, fade, slight blur, no overshoot. Hover `scale(1.02)`, press `scale(.98)`. Never `linear` or CSS `ease`. Reduced motion (`prefers-reduced-motion`, `data-motion="reduced"`) is opacity fades only.
+- **Behaviour.** Whole row/card clickable, `min-h-touch` (U22). Press feedback <120ms, optimistic toggles (X19). No loader under 300ms, then ≥600ms; the in-button spinner is the only spinner; no skeletons (X1, X2). Reserve space, zero CLS (U16b, X3). A loading submit keeps its box, `disabled` + `aria-busy` (X16). Visible labels, `inputmode` + `autocomplete`, validate on blur, never clear input (X12, X14, X15). Dialogs trap focus, Esc closes, focus returns, one at a time (X17, X18). Reversible: act now + 8s undo toast; irreversible: typed phrase; no `window.confirm` (X6–X8). Errors stay in their region with Retry; empty states offer the next action (X9, X21).
+- **Accent budget.** Per viewport: one level 4 (once), ≤1 level 3, few level 2; level 1 is a hairline or icon.
+- **Stack (U2).** Next.js App Router, React 19, TS strict, Tailwind v4, shadcn-style on Radix, Phosphor, Motion, anime.js (SVG, particles), Lenis (marketing only), Fontsource. Strings via `t()` in `en` and `he`. `"use client"` on the smallest leaf. Add nothing else without asking.
 
-| id | Feel |
-|---|---|
-| `champagne-wine` | ivory, champagne-bronze, wine secondary |
-| `wine-gold` | deeper wine, gold-bronze, evening |
-| `navy-cream-green` | navy ink, cream, forest accent |
-| `brown-navy-lightblue` | paper, espresso, sky-blue; navy dark |
-| `deep-green-brown` | felt green, leather brown |
-| `silver-white` | cool clinical luxe |
-| `monochrome` | tonal only; graphite accent |
-| `toxic-white-orange` | lime on white, hot orange; lime is decorative |
+## 3. Before done
 
-Set `<html data-pack="…" data-theme="light|dark" dir="ltr|rtl" lang="en|he">`. Examples also accept `?pack=&theme=&dir=&motion=`.
+In `05-golden-examples/app` (after `npm install`), or the same checks on the user's app:
 
-New pack: add `01-fundamentals/palettes/<id>.json` (`canvas` light/dark, `accent`, `secondary`, optional `ink`, optional `metal`) and run `node 01-fundamentals/scripts/build-tokens.mjs`. Read only the FAIL lines it prints.
-
-## Roles (no raw values)
-
-Import the generated CSS. Never paste it, and never write hex, `rgb(`, `hsl(`, `oklch(`, a Tailwind palette class (`gray-` `slate-` `neutral-`), or a raw duration, radius, or shadow.
-
-`bg-canvas` `bg-surface` `bg-surface-raised` `bg-surface-sunken` `text-ink` `text-ink-2` `text-ink-3` `border-hairline` `border-hairline-strong` `border-control`
-
-Accent is Tailwind `brand-*` (CSS `--ds-accent*`): `bg-brand-solid` `hover:bg-brand-solid-hover` `text-on-brand` `text-brand-text` `text-brand-ui`. Raw `bg-brand` is decorative only. Text uses `text-brand-text`. Icons, rings, and charts use `text-brand-ui` / `ring-focus`.
-
-Secondary is `deep-*`: `bg-deep-solid` `text-on-deep` `text-deep-text`.
-
-Status: `text-success|warning|danger|info` with `bg-*-bg` and `border-*-border`, always paired with an icon or words.
-
-Shape and rhythm: `rounded-pill` controls, `rounded-card` cards, `rounded-sheet` on the leading corners of sheets, `rounded-sm` small pieces, `rounded-editorial` images. `shadow-sm|md`. `font-display` `font-sans` `font-mono`. `py-section-xs|sm|md|lg|xl` between sections. `min-h-touch` / `size-touch` (44). `max-w-app|marketing|reading`. `ease-soft`. Token arbitrary values: `duration-(--ds-duration-ui)` `z-(--ds-z-modal)` `backdrop-blur-(--ds-glass-blur)`.
-
-Inside components, Tailwind spacing steps 1, 2, 3, 4, 6, 8, 12, 16, 24, 32 only. Logical properties only: `ms-` `me-` `ps-` `pe-` `start-` `end-` `text-start` `border-s` `rounded-s-*`. Banned: `ml-` `mr-` `pl-` `pr-` `left-` `right-` `text-left` `text-right`.
-
-Depth: cards are tint + hairline. `.glass` only on overlays (nav, sheet, modal, toast, popover). Never glass on glass. In dark mode, depth is `canvas → surface → surface-raised`, not a heavy shadow.
-
-Type: display serif at `text-2xl` (28px) and up, weight 400, never bold. Smaller headings use sans at emphasis. Labels are `text-2xs`, uppercase, tracked, Latin only. Hebrew drops uppercase, italics, and tracking. Do not center a body paragraph longer than two lines. Figures use `font-sans tabular-nums`. Ghost numerals use `text-ink` at opacity ≤ 0.08 and `aria-hidden`. Text on an image or gradient sits on a `scrim` or a glass panel. A marketing viewport holds one idea and one primary action.
-
-Icons: Phosphor `thin`, `light` at ≤16px. `aria-hidden` unless the icon is the control. Icon buttons need an accessible name and a 44px target. Mirror arrows and chevrons in RTL (`rtl:-scale-x-100`). Do not mirror play, check, logo, or clock.
-
-Motion comes from `lib/motion.ts` (`durations`, `springs.overlay|ui|hero`, `ease.soft`). Overlays use `springs.overlay` (no overshoot): about 12px rise, fade, slight blur. Hover `scale(1.02)`, press `scale(.98)`. Never `linear` or CSS `ease` for UI motion. Reduced motion (`prefers-reduced-motion` and `data-motion="reduced"`) is opacity fades only.
-
-Accent budget per viewport: one level 4 (particles, once), at most one level 3 (shiver, three cycles), few level 2 (radial light), level 1 is a hairline or icon. Open `04-signature-moves/accent-intensity.md` only when building a level 2+ effect.
-
-## Anatomy
-
-- **Safe triangle.** A nested menu stays open while the pointer travels toward its submenu (~180ms). Mirror the triangle in RTL.
-- **Hit targets.** The clickable box is the whole row, card, or nav item, not the label. Minimum `min-h-touch`.
-- **Hover intent.** Wait 150ms (range 100–200) before a heavy popover. Once it is open, siblings in the group switch immediately.
-- **Search.** Local state is instant. Remote autocomplete waits 250ms (range 200–300) and aborts the previous request. Backspace and an empty query read a local cache immediately.
-- **Submit loading.** The label stays in flow at `opacity-0`; the spinner is `absolute inset-0`. Width, height, and accessible name stay put. `disabled` + `aria-busy`.
-- **Keyboards.** Set `inputmode` (`numeric`, `decimal`, `email`) and `autocomplete` (`email`, `name`, `current-password`, `new-password`, `one-time-code`) on every field. Labels stay visible. Validate on blur with `aria-describedby`. Never clear the value.
-- **Optimistic UI.** Flip the control in the same frame, send the request behind it, and reverse with a toast if it fails.
-- **Focus.** Trap Tab inside the open dialog. Esc closes. Restore focus to the trigger. One modal at a time: close the first, then open the next. A typed confirmation does not dismiss on scrim click, and Cancel takes initial focus.
-- **Scroll memory.** Restore the feed's scroll position on the way back. Do not move a reader who has scrolled up. Chat scrolls natively upward; within 80px of the end it snaps after 140ms of idle; pulling past the end latches the options panel at 72px.
-- **Zero CLS.** Give images, charts, and async media an `aspect-ratio` or a fixed block size before they load.
-- **Optical alignment.** Shift play triangles and similar glyphs 1–2px toward inline-end. Leave that offset in place.
-- **Undo and errors.** A reversible destructive action happens immediately, with a glass toast and 8s undo, kept at least 16px from the primary action. At most three toasts; undo drains a hairline, errors wait for a dismiss. An irreversible action needs a typed phrase; danger styling exists only inside that dialog. No `window.confirm`. Errors stay in the failing region, in plain language, and offer Retry. An empty state says what belongs there and offers the next action.
-
-Loading: under 300ms, show nothing; after 300ms, keep the loader up for at least 600ms; then use the same staggered fade-in (700ms, 60ms between siblings). The in-button spinner is the only spinner. No skeletons. Route changes crossfade; do not blank the page.
-
-Stack, and do not add to it: Next.js App Router, React 19, TypeScript strict, Tailwind v4, hand-written shadcn-style components on Radix, Phosphor, Motion for UI, anime.js for SVG and particles, Lenis on marketing pages only, Fontsource (Cormorant Garamond, Frank Ruhl Libre, Inter, Heebo, JetBrains Mono). User-visible strings go through `t()` with `en` and `he`. Put `"use client"` on the smallest leaf that needs it.
-
-## Router
-
-| You are… | Open only |
-|---|---|
-| Reusing a primitive that already exists | `05-golden-examples/api.md`, then that one source file |
-| Building the marketing page | `05-golden-examples/landing.md` |
-| Building auth | `05-golden-examples/auth.md` |
-| Building the dashboard | `05-golden-examples/dashboard.md` |
-| Building chat scroll | `04-signature-moves/scroll-and-focus.md` |
-| Building the cycling placeholder | `04-signature-moves/animated-inputs.md` |
-| Building a level 2–4 accent | `04-signature-moves/accent-intensity.md` |
-| Unsure about a Hebrew or RTL exception | `02-rules/i18n-rtl.md` |
-| Adding a dependency or wiring CSS imports | `03-libraries/stack.md` |
-| Implementing safe-triangle math beyond the rule above | `02-rules/design-anatomy.md` |
-| Changing a token value | `01-fundamentals/core.json` or one `palettes/<id>.json`, then the build script |
-
-Craft rules C1–C40 (motion principles, UX laws, visual polish): read `02-rules/craft-checklist.md` once per UI task, before building. Open the rest only to settle a dispute: `02-rules/ui-rules.md` (U1–U25), `ux-rules.md` (X1–X25), `01-fundamentals/foundations.md` (token numbers), `04-signature-moves/interactions.md` / `type-moves.md` (lift, glint, ghost numerals).
-
-## Done when
-
-1. `npm run check:raw` (in `05-golden-examples/app`): 0 hits.
-2. Two packs × light/dark × LTR/RTL, at 1280×860 and 390×844.
-3. Tab order is visible; dialogs trap focus and restore it to the trigger.
-4. Reduced motion is opacity only.
-5. Nothing shifts on load, and a loading button keeps its box.
-6. C1–C40 hold.
+1. `npm run check:raw` → 0 hits; `npm run typecheck` passes.
+2. `npm run build && npx next start -p 3100`, then `npm run shots -- /<route>` (2 packs × light/dark × LTR/RTL; `W=390 H=844` for mobile; first time `npx playwright install chromium`). It must report no console errors or overflow; look at every shot. Golden app: `npm run verify:behaviour`.
+3. Tab through: focus visible, dialogs trap and restore. `?motion=off`: opacity only. Nothing shifts on load.
+4. Walk C1–C40 and name any rule you broke on purpose.

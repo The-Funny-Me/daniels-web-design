@@ -1,129 +1,49 @@
-# `/web-design` — Skill System & Design Work Folder
+# `/web-design` — agent skill for luxury, token-driven web UI
 
-A complete, token-driven design-system repository and Cursor agentic skill specification for high-craft, luxury web application design ("minimal maximum", white velvet sheets in a golden hotel room).
+A Cursor agent skill plus the design system behind it: OKLCH tokens with 8 palette packs, numbered UI/UX rules, a C1–C40 craft checklist, signature motion, and a verified Next.js reference app ("white velvet sheets in a golden hotel room").
 
----
-
-## Quick Start (Zero-Password Unpack into Cursor)
-
-Any user on any local machine can install the skill into Cursor in three steps with **no `sudo` or password required**:
+## Install
 
 ```bash
-git clone <repo-url> web-design
+git clone https://github.com/The-Funny-Me/daniels-web-design web-design
 cd web-design
 ./unpack.sh
 ```
 
-`./unpack.sh` unpacks `contents/` directly into `~/.cursor/skills/web-design` (and `~/.cursor/skills/Daniels-web-design` for backwards compatibility), excluding build caches (`node_modules`, `.next`). Once unpacked, invoke `/web-design` directly inside Cursor.
+`unpack.sh` copies `contents/` (the skill, the only copy) to `~/.cursor/skills/web-design`, skipping build output. It also removes the old duplicate `~/.cursor/skills/Daniels-web-design` install if one exists, so agents see one skill. No sudo. Override the target with `CURSOR_SKILLS_DIR=…`.
 
-`SKILL.md` is the operating spec: pack list, roles, spacing, motion, anatomy, and the delivery checklist. An agent opens one extra file only when that spec names it (`05-golden-examples/api.md` to reuse a component, one page brief, or one signature-move sheet). It does not read `tokens.css`, `palette.md`, `preview.html`, or the example app source into context.
+## How agents load it
 
----
+`contents/SKILL.md` is the router: a short digest of the rules every UI task needs, a task table that names the one or two extra files to open, and a concrete done check. Rule ids are stable and unique: `U` ui-rules, `X` ux-rules, `C` craft-checklist, `R` i18n-rtl. Generated files (`tokens.css`, `palette.md`, `preview.html`, …) are imported or run, never read.
 
-## Repository Structure
+## Layout
 
 ```
-web-design/
-├── unpack.sh                   # One-command installer into ~/.cursor/skills/ (no password/sudo)
-├── preview.html                # Standalone zero-dependency interactive showcase (8 packs + physics)
-├── README.md                   # Repository overview & quick-start guide
-├── SKILL.md                    # Primary Cursor skill definition & workflow
-├── references.md               # Sourced design references & verified guidelines
-├── LICENSE                     # MIT License
-└── contents/                   # Unpackable skill payload copied to ~/.cursor/skills/
-    ├── SKILL.md
-    ├── README.md
-    ├── references.md
-    ├── preview.html
-    ├── 01-fundamentals/        # OKLCH token generator, 8 palette packs, WCAG AA hard-fail verifier
-    │   ├── core.json
-    │   ├── foundations.md
-    │   ├── palette.md
-    │   ├── preview.html
-    │   ├── tokens.{json,css} · tailwind-theme.css · shadcn-bridge.css · contrast-report.json
-    │   ├── palettes/*.json     # 8 curated color packs (champagne-wine default)
-    │   └── scripts/            # build-tokens.mjs & preview.template.html
-    ├── 02-rules/               # Mandatory UI/UX rules, Good Design Anatomy & RTL/i18n
-    │   ├── ui-rules.md         # Spatial 8pt grid, dark mode surface tinting, optical alignment, Zero CLS
-    │   ├── ux-rules.md         # Cursor dynamics, form physics, state & motion, focus traps
-    │   ├── design-anatomy.md   # Deep reference on cursor, input, state, and layout physics
-    │   ├── craft-checklist.md  # C1–C40: animation principles, UX laws, visual polish (one line each)
-    │   └── i18n-rtl.md         # Logical properties & Hebrew RTL parity
-    ├── 03-libraries/
-    │   └── stack.md            # Next.js 16, React 19, Tailwind v4, Motion, anime.js, Lenis, Radix
-    ├── 04-signature-moves/
-    │   ├── interactions.md     # Lift/press, specular glint, safe triangle, debounce, optimistic UI
-    │   ├── animated-inputs.md  # Self-typing & password-masking input overlays
-    │   ├── scroll-and-focus.md # Scrim + glass sheet, Lenis, chat scroll latch, scroll memory
-    │   ├── accent-intensity.md # 5-level dynamic accent ladder (0..4)
-    │   └── type-moves.md       # Ghost numerals, tracked labels, serif headlines
-    └── 05-golden-examples/
-        ├── README.md           # Golden examples architecture & verification commands
-        ├── api.md              # Component index. Open this instead of the app tree.
-        ├── landing.md · auth.md · chat.md · dashboard.md
-        └── app/                # Complete Next.js 16 reference app (/landing, /auth, /chat, /dashboard)
+unpack.sh                     installer
+contents/                     the skill
+├── SKILL.md                  router + digest + done check
+├── references.md             sources (not loaded by agents)
+├── 01-fundamentals/          core.json, palettes/*.json → build-tokens.mjs → tokens.css/json, tailwind-theme.css,
+│                             shadcn-bridge.css, palette.md, contrast-report.json, preview.html; foundations.md
+├── 02-rules/                 ui-rules (U), ux-rules (X), craft-checklist (C), i18n-rtl (R), design-anatomy (implementation notes)
+├── 03-libraries/stack.md     stack, CSS wiring, library boundaries
+├── 04-signature-moves/       interactions, animated-inputs, scroll-and-focus, accent-intensity, type-moves
+└── 05-golden-examples/       api.md, landing/auth/chat/dashboard briefs, app/ (Next.js reference)
 ```
-
----
-
-## Good Design Anatomy Included in the Skill
-
-1. **Navigation & Cursor Dynamics**
-   - **Submenu Aiming (The Safe Triangle Buffer):** Predicts diagonal cursor trajectory toward open submenus so passing over neighboring items never collapses the active menu prematurely.
-   - **Expanded Hit Targets (Fitts's Law):** Interactive padding (`min-h-touch` / full-card target) fills the entire container rather than anchoring click listeners only to inline text or icons.
-   - **Hover Intent Delay:** Delays heavy popovers and rich tooltips by `100–200ms` (`150ms` default) to prevent unwanted triggers during fast cursor sweeps.
-
-2. **Search, Input & Form Physics**
-   - **Debounced Intent vs. Raw Input Queries:** Delays network autocomplete requests by `200–300ms` (`250ms` default) while serving instant results from a local `Map` cache on backspace.
-   - **Button Dimension Lock on Loading States:** Preserves explicit `width` and `height` on submit buttons when transitioning to a loading spinner (`opacity-0` label in flow + centered overlay `<Spinner />`).
-   - **Native Keyboard Tailoring (`inputmode` & `autocomplete`):** Sets explicit `inputmode="numeric"`, `inputmode="decimal"`, or `type="email"` alongside semantic `autocomplete` tokens.
-
-3. **State Management & Motion**
-   - **Optimistic UI Updates with Graceful Rollback:** Immediately reflects toggles in the UI before the network request resolves, rolling back automatically with a calm glass toast if the API call fails.
-   - **Focus Trap & Focus Restoration:** Traps `Tab` / `Shift+Tab` inside active modal dialogs and sheets, and restores focus to the triggering element on close.
-   - **Scroll Position Memory:** Preserves exact scroll coordinates (`sessionStorage` keyed by pathname) when navigating back from a detail view to a feed.
-
-4. **Layout Physics & Visual Polish**
-   - **Skeleton Reserve Areas (Zero CLS):** Reserves structural `aspect-ratio` or explicit block-size bounds for async media and charts before load.
-   - **Optical Alignment vs. Mathematical Centering:** Nudges asymmetrical icons (such as play triangles by `1–2px` toward `inline-end`) to satisfy human visual perception.
-   - **Natural Spring Curves over Linear Transitions:** Uses critically damped springs (`springs.overlay`, `springs.ui`) and directional cubic-bezier curves (`cubic-bezier(0.16, 1, 0.3, 1)` / `--ds-ease-soft`).
-   - **Elevation via Surface Tinting (Dark Mode):** Communicates depth in dark mode via lightness layering (`canvas` → `surface` → `surface-raised`) and `1px` hairlines rather than heavy drop shadows.
-
----
 
 ## Commands
 
-### Interactive Preview (`preview.html`)
-
-Open `preview.html` directly in any browser to test all 8 palette packs, light/dark modes, LTR/RTL (Hebrew), Levels 0–4 of the accent ladder, animated inputs, glass sheet focus trapping, and the interactive Chapter 05 Good Design Anatomy demos.
-
-### Rebuild & Verify Design Tokens
-
 ```bash
-node contents/01-fundamentals/scripts/build-tokens.mjs           # regenerate tokens & preview.html (275 WCAG hard checks)
-node contents/01-fundamentals/scripts/build-tokens.mjs --check   # verify only
-```
+# Tokens (fails on any WCAG AA break); open contents/01-fundamentals/preview.html to see every pack
+node contents/01-fundamentals/scripts/build-tokens.mjs
 
-### Run & Verify the Golden Examples Next.js App
-
-```bash
+# Reference app
 cd contents/05-golden-examples/app
-npm install
-npm run typecheck          # tsc --noEmit
-npm run check:raw          # zero raw colors, palette classes, physical directions, or off-grid spacing
-npm run build              # production Next.js build (/landing, /auth, /chat, /dashboard)
-npm run verify:behaviour   # Playwright end-to-end behavioural verification across all routes
+npm install                 # also generates src/design/ from 01-fundamentals (npm run tokens)
+npm run typecheck
+npm run check:raw           # raw colours, palette classes, physical directions, off-grid spacing
+npm run build && npx next start -p 3100
+npx playwright install chromium   # once
+npm run shots -- /landing   # 2 packs × light/dark × LTR/RTL screenshots + console/overflow check
+npm run verify:behaviour    # end-to-end behaviour suite
 ```
-
----
-
-## Status
-
-| Part | State |
-|---|---|
-| `01-fundamentals` token generator & 8 packs | Complete; 275 WCAG hard checks pass (`0` failures) |
-| `02-rules` (`ui-rules.md`, `ux-rules.md`, `design-anatomy.md`, `craft-checklist.md`, `i18n-rtl.md`) | Complete |
-| `03-libraries` (`stack.md`) | Complete |
-| `04-signature-moves` | Complete |
-| `05-golden-examples/app` (`/landing`, `/auth`, `/chat`, `/dashboard`) | Complete; verified across packs × light/dark × LTR/RTL × desktop/mobile |
-| `unpack.sh` + `preview.html` + `contents/` wrapper | Complete; verified passwordless local unpack into `~/.cursor/skills/` |
