@@ -47,6 +47,7 @@ web-design/
     │   ├── ui-rules.md         # Spatial 8pt grid, dark mode surface tinting, optical alignment, Zero CLS
     │   ├── ux-rules.md         # Cursor dynamics, form physics, state & motion, focus traps
     │   ├── design-anatomy.md   # Deep reference on cursor, input, state, and layout physics
+    │   ├── craft-checklist.md  # C1–C40: animation principles, UX laws, visual polish (one line each)
     │   └── i18n-rtl.md         # Logical properties & Hebrew RTL parity
     ├── 03-libraries/
     │   └── stack.md            # Next.js 16, React 19, Tailwind v4, Motion, anime.js, Lenis, Radix
@@ -121,7 +122,7 @@ npm run verify:behaviour   # Playwright end-to-end behavioural verification acro
 | Part | State |
 |---|---|
 | `01-fundamentals` token generator & 8 packs | Complete; 275 WCAG hard checks pass (`0` failures) |
-| `02-rules` (`ui-rules.md`, `ux-rules.md`, `design-anatomy.md`, `i18n-rtl.md`) | Complete |
+| `02-rules` (`ui-rules.md`, `ux-rules.md`, `design-anatomy.md`, `craft-checklist.md`, `i18n-rtl.md`) | Complete |
 | `03-libraries` (`stack.md`) | Complete |
 | `04-signature-moves` | Complete |
 | `05-golden-examples/app` (`/landing`, `/auth`, `/chat`, `/dashboard`) | Complete; verified across packs × light/dark × LTR/RTL × desktop/mobile |

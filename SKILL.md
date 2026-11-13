@@ -7,13 +7,13 @@ description: Build web UI (landing pages, apps, dashboards, auth, chat) in a lux
 
 Luxury, spacious, token-driven UI. Feeling: white velvet sheets in a golden hotel room. Few elements, each with room, one considered detail. Calm springs, quiet glass, hairlines, serif display.
 
-This file is the operating spec. Apply it as written. Open another file only when the router names it, and open only that file.
+This file is the operating spec. Apply it as written. Open another file only when the router names it.
 
 ## Do not load
 
 Never read these into context. Import or run them:
 
-- `01-fundamentals/tokens.css`, `tokens.json`, `tailwind-theme.css`, `shadcn-bridge.css`, `contrast-report.json`, `preview.html`, and the copies under `05-golden-examples/app/src/design/` and the repo-root `preview.html`
+- `01-fundamentals/tokens.css`, `tokens.json`, `tailwind-theme.css`, `shadcn-bridge.css`, `contrast-report.json`, `preview.html`, and their copies (`05-golden-examples/app/src/design/`, repo root)
 - `01-fundamentals/palette.md` (generated swatches). Pack choice uses the table below.
 - `05-golden-examples/app/` source, `node_modules`, `.next`, `package-lock.json`, i18n dictionaries
 - `README.md`, `references.md`
@@ -100,12 +100,13 @@ Stack, and do not add to it: Next.js App Router, React 19, TypeScript strict, Ta
 | Implementing safe-triangle math beyond the rule above | `02-rules/design-anatomy.md` |
 | Changing a token value | `01-fundamentals/core.json` or one `palettes/<id>.json`, then the build script |
 
-`02-rules/ui-rules.md` and `02-rules/ux-rules.md` are the numbered checklists (U1–U25, X1–X25) behind this file. Open one only to settle a dispute about a rule id. `01-fundamentals/foundations.md` is the same for token numbers. `04-signature-moves/interactions.md` and `type-moves.md` are the parameter sheets for lift, glint, and ghost numerals.
+Craft rules C1–C40 (motion principles, UX laws, visual polish): read `02-rules/craft-checklist.md` once per UI task, before building. Open the rest only to settle a dispute: `02-rules/ui-rules.md` (U1–U25), `ux-rules.md` (X1–X25), `01-fundamentals/foundations.md` (token numbers), `04-signature-moves/interactions.md` / `type-moves.md` (lift, glint, ghost numerals).
 
 ## Done when
 
-1. `npm run check:raw` in `05-golden-examples/app` (or the same grep): 0 hits.
+1. `npm run check:raw` (in `05-golden-examples/app`): 0 hits.
 2. Two packs × light/dark × LTR/RTL, at 1280×860 and 390×844.
 3. Tab order is visible; dialogs trap focus and restore it to the trigger.
 4. Reduced motion is opacity only.
 5. Nothing shifts on load, and a loading button keeps its box.
+6. C1–C40 hold.
