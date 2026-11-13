@@ -1,4 +1,4 @@
-> Agents: do not open this file unless `SKILL.md` routed you here. The operating rules are already in `SKILL.md`.
+> Open only when `SKILL.md` routes you here. `SKILL.md` carries the digest; this file is the canonical text behind each id.
 
 # 02 · UX rules
 
@@ -11,7 +11,7 @@
 
 ## Destructive actions (hybrid)
 - **X6** Reversible actions (delete item, archive, remove from list) happen immediately with an **8s undo toast**. The toast is glass, bottom-start aligned, announces via `role="status"`, and undo is reachable by keyboard.
-- **X7** Irreversible actions (delete account, purge data, revoke keys) require a modal with **typed confirmation** of a named object. The destructive button is `danger`-styled only inside this modal; the cancel action is the default focus.
+- **X7** Irreversible actions (delete account, purge data, revoke keys) require a modal with **typed confirmation** of a named object. The destructive button is `danger`-styled only inside this modal; the cancel action is the default focus, and a scrim click does not dismiss it.
 - **X8** Never use native `confirm()`. Never put a destructive action next to a primary one without 16px+ separation.
 
 ## Errors
@@ -23,23 +23,23 @@
 
 ## Forms and inputs
 - **X14** Labels are always visible and persistent. The animated example placeholders (see `04-signature-moves/animated-inputs.md`) never replace a label.
-- **X15 (Native Keyboard Tailoring)** Explicitly set `inputmode` (`inputmode="numeric"`, `inputmode="decimal"`, `inputmode="email"`) and `type` (`type="email"`, etc.) alongside appropriate `autocomplete` tags (`email`, `name`, `current-password`, `new-password`) on every field to summon the right touch keyboard and autofill triggers without browser layout shifts. Passwords support show/hide.
-- **X16 (Button Dimension Lock on Loading States)** Submit buttons show a loading state in place, disable duplicate submission (`disabled` + `aria-busy="true"`), and preserve their exact `width` and `height` (keeping label text in layout flow at `opacity-0` while centering the spinner overlay) so buttons never shrink or warp layout flow. Preserve user input on failure.
-- **X16a (Debounced Intent vs. Raw Input Queries)** Delay autocomplete or search network requests until a brief typing pause occurs (200–300ms debounce), and pull instantly from local cache on backspace, rather than firing unthrottled requests that cause flashing dropdown results and race conditions.
+- **X15 Keyboards.** Every field sets `type`, `inputmode` and `autocomplete` (`email`, `name`, `current-password`, `new-password`, `one-time-code`) so the right keyboard and autofill appear. Passwords support show/hide.
+- **X16 Button lock.** A submitting button shows its loading state in place, blocks repeat submits (`disabled` + `aria-busy="true"`) and keeps its exact width and height. Input survives a failure.
+- **X16a Debounced search.** Remote autocomplete waits for a 200–300ms typing pause and aborts the previous request; Backspace and empty queries read a local cache instantly.
 
 ## Overlays, navigation and cursor dynamics
-- **X17 (Focus Trap & Focus Restoration)** Modal and sheet: trap keyboard `Tab` focus within active modal dialogs, `Esc` to close, explicitly restore active focus to the triggering element once the modal closes, scroll lock on the page, scrim in focus mode (see foundations §6). Entrance uses the `overlay` spring, with no overshoot.
+- **X17 Focus.** Modals and sheets trap Tab, close on Esc, restore focus to the trigger, lock page scroll and show the scrim (foundations §6). Entrance uses the `overlay` spring, no overshoot.
 - **X18** Popovers close on outside click and `Esc`. One modal at a time; no modal opens another modal (close the first before opening the next).
-- **X18a (Submenu Aiming / Safe Triangle Buffer)** In nested dropdown menus, predict cursor trajectory toward submenus using dynamic triangular buffers (or pointer-tracking vector math) so submenus do not collapse prematurely when moving diagonally across neighboring items.
-- **X18b (Hover Intent Delay)** Delay the trigger of heavy popovers or tooltips by 100–200ms to avoid firing unwanted popovers when a user rapidly sweeps the cursor across the screen.
+- **X18a Safe triangle.** A nested menu stays open while the pointer travels diagonally toward its submenu (~180ms buffer); mirrored in RTL.
+- **X18b Hover intent.** Heavy popovers and tooltips wait 100–200ms (default 150) before opening; once one is open, siblings switch immediately.
 
 ## State management and feedback
-- **X19 (Optimistic UI Updates with Graceful Rollback)** Every interaction gets feedback within 120ms (press state). State toggles (archiving, bookmarking, liking, favoriting) update immediately in the UI before the network payload resolves, paired with a silent background request and automatic state reversal with a subtle toast notification if the API call fails or Undo is clicked.
+- **X19 Feedback and optimistic UI.** Every interaction shows feedback within 120ms (press state). Toggles (archive, bookmark, like) flip immediately, the request runs behind, and failure or Undo reverses it with a quiet toast.
 - **X20** Toasts: max three visible, bottom-`start` aligned; auto-dismiss after 6s except undo (8s with draining hairline) and errors (manual dismiss).
 - **X21** Empty states explain what belongs here and offer the next action; they are designed, not blank.
 
 ## Scroll (cross-reference)
-- **X22 (Scroll Position Memory)** Preserve precise scroll coordinates when navigating back from a detail view to a feed, and never yank a user who has scrolled up in a live stream. Smooth/inertial scroll only on marketing surfaces and main focus elements; native elsewhere. Chat uses native scroll up and the bottom snap-and-reveal pattern. Details in `04-signature-moves/scroll-and-focus.md`. Any scroll-hijack must have a keyboard and button alternative and must never trap the user.
+- **X22 Scroll memory.** Restore the feed position on Back; never move a reader who has scrolled up in a live stream. Smooth scroll only on marketing focus elements; native elsewhere; chat per `04-signature-moves/scroll-and-focus.md`. Any scroll-hijack has a keyboard and button alternative.
 
 ## Accessibility baseline
 - **X23** Semantic landmarks, one `h1`, logical heading order. Every interactive element is keyboard-reachable in visual order (which flips in RTL).

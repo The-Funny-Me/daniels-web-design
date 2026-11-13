@@ -12,7 +12,7 @@ Coding agents pattern-match. A golden example is a small set of pristine, fully 
 
 ```bash
 cd 05-golden-examples/app
-npm install
+npm install          # also generates src/design/ (npm run tokens)
 npm run typecheck
 npm run check:raw
 npm run build
@@ -37,8 +37,9 @@ Every page includes the floating `DesignSwitcher` (bottom-`start`) and accepts U
 ### Verification scripts
 
 ```bash
-# Screenshot + console error + horizontal overflow matrix
-node scripts/screenshot-matrix.mjs shots /landing full
+# Screenshot + console error + horizontal overflow matrix (2 packs × light/dark × LTR/RTL)
+npx playwright install chromium   # once
+npm run shots -- /landing full
 
 # Full Playwright interactive behaviour suite
 npm run verify:behaviour

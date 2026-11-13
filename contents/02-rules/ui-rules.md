@@ -1,4 +1,4 @@
-> Agents: do not open this file unless `SKILL.md` routed you here. The operating rules are already in `SKILL.md`.
+> Open only when `SKILL.md` routes you here. `SKILL.md` carries the digest; this file is the canonical text behind each id.
 
 # 02 · UI rules
 
@@ -27,8 +27,8 @@ Non-negotiable. Each rule is checkable; if an agent cannot verify a rule from th
 - **U14** Buttons, inputs, tags, nav: `pill`. Cards `card` (24). Small elements `sm` (12). Bottom sheets and large modals `sheet` (32) on the leading corners. Editorial image blocks may use `editorial` (2px). Nest radii: inner = outer − padding.
 - **U15** Base cards use tint + hairline + `shadow-sm|md`. Overlays use glass. Never glass on glass; never a drop shadow with a gray-black color.
 - **U16** Only one glass layer per viewport region. Glass needs the opaque fallback (`prefers-reduced-transparency`, no `backdrop-filter` support).
-- **U16a (Elevation via Surface Tinting in Dark Mode)** Communicate visual depth in dark mode using lightness layering (`canvas` → `surface` → `surface-raised`) and surface opacity overlays rather than heavy drop shadows, which disappear against dark backgrounds.
-- **U16b (Skeleton Reserve Areas / Zero CLS)** Reserve fixed structural aspect-ratio space (`aspect-ratio` or explicit height bounds) for dynamic images, charts, and asynchronous media before they load so Cumulative Layout Shift (CLS) is zero.
+- **U16a Dark elevation.** In dark mode, depth is lightness steps (`canvas` → `surface` → `surface-raised`) and tinted overlays, not heavy shadows.
+- **U16b Zero CLS.** Images, charts and async media get an `aspect-ratio` or fixed block size before they load.
 
 ## Typography
 - **U17** Display serif ≥ 28px only; below that use the body face. No bold display. Max two typefaces per page (display + body; mono only for code/data). Hero/stat figures use the proportional sans face (`font-sans tabular-nums`), and headings enforce `font-variant-numeric: lining-nums` so Cormorant numerals never read as letters.
@@ -38,17 +38,13 @@ Non-negotiable. Each rule is checkable; if an agent cannot verify a rule from th
 ## Iconography and imagery
 - **U20** Phosphor only, `thin` default, `light` ≤ 16px or for emphasis. No mixed icon sets, no emoji as UI.
 - **U21** Icons are decorative (`aria-hidden`) unless they stand alone; standalone icon buttons need an accessible name and a 44×44 minimum target.
-- **U21a (Optical Alignment vs. Mathematical Centering)** Nudge asymmetric icons, play triangles, or directional glyphs slightly off-center (1–2px toward their visual weight center) to satisfy human perception rather than relying solely on raw mathematical centering.
+- **U21a Optical alignment.** Shift asymmetric glyphs (play triangles, arrows) 1–2px toward their visual centre instead of trusting mathematical centring.
 
 ## Interaction targets and states
-- **U22 (Expanded Hit Targets / Fitts's Law)** Minimum touch target 44×44px (`min-h-touch` / `size-touch`). Extend interactive hit targets (`padding` or full-card `<Link>` wrappers) to fill the entire container or card rather than anchoring click listeners strictly to inline text or icons. Hover, focus-visible, active, disabled and loading states exist for every interactive element.
+- **U22 Hit targets (Fitts).** Minimum 44×44px (`min-h-touch` / `size-touch`); the hit area fills the whole row, card or nav item, not just the label or icon. Every interactive element has hover, focus-visible, active, disabled and loading states.
 - **U23** Focus ring: `2px solid var(--ds-focus-ring)` with 3px offset, on every focusable element, never removed.
-- **U24 (Natural Spring Curves over Linear Transitions)** Hover/press default: `scale(1.02)` hover, `scale(.98)` active, `duration-press`, `ease-soft`; disabled elements do neither. Modal pop-ins, drawer slides, and UI transitions use directional cubic-bezier curves (`--ds-ease-soft` / `cubic-bezier(0.16, 1, 0.3, 1)`) or critically damped springs (`springs.overlay`, `springs.ui`) — never linear or default CSS `ease` transitions.
+- **U24 Press and curves.** Hover `scale(1.02)`, active `scale(.98)`, `duration-press`, `ease-soft`; disabled elements do neither. Transitions use `--ds-ease-soft` or critically damped springs (`springs.overlay`, `springs.ui`), never `linear` or CSS `ease`.
 - **U25** Disabled is communicated by opacity 0.5 *and* `aria-disabled`/`disabled`, not by color alone.
 
-## Delivery checklist (the agent runs this before saying "done")
-1. Run `npm run check:raw` (or grep the diff for `#[0-9a-fA-F]{3,8}`, `rgb(`, `hsl(`, `oklch(`, `ml-`, `mr-`, `pl-`, `pr-`, `left-`, `right-`, `text-left`, `text-right`, `gray-`, `slate-`, `neutral-`, and banned spacing steps `5, 7, 9, 10, 11`): 0 violations.
-2. Render in two packs × two modes × LTR/RTL (at both desktop `1280×860` and mobile `390×844`) and inspect each screenshot.
-3. Tab through the page; every focus is visible, modals trap focus and restore focus to the trigger on close.
-4. Toggle `prefers-reduced-motion` and `?motion=off`; nothing moves except opacity fades.
-5. Confirm zero layout shift (CLS) when content loads and button dimensions stay locked during loading states.
+## Delivery
+Run `SKILL.md` §3 (Before done).

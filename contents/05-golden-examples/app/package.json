@@ -5,11 +5,13 @@
   "type": "module",
   "scripts": {
     "tokens": "node scripts/sync-tokens.mjs",
+    "postinstall": "npm run tokens",
     "dev": "npm run tokens && next dev",
     "build": "npm run tokens && next build",
     "start": "next start",
-    "typecheck": "tsc --noEmit",
+    "typecheck": "npm run tokens && tsc --noEmit",
     "check:raw": "node scripts/check-raw-values.mjs",
+    "shots": "node scripts/screenshot-matrix.mjs shots",
     "verify:behaviour": "node scripts/verify-behaviour.mjs"
   },
   "dependencies": {
@@ -37,6 +39,7 @@
     "@types/node": "22.15.0",
     "@types/react": "19.3.0",
     "@types/react-dom": "19.3.0",
+    "playwright": "^1.60.0",
     "tailwindcss": "4.3.3",
     "typescript": "5.9.3"
   }

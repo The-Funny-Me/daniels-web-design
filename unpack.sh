@@ -1,75 +1,47 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-# /web-design (Daniels-web-design) Unpack & Installation Script for Cursor AI
-# Unpacks the web-design skill system into Cursor's user-scoped global skill storage
-# (~/.cursor/skills/) without requiring root or any password.
+# Installs the /web-design skill (the contents/ folder) into Cursor's user skill folder.
+# No root or password needed. Re-running replaces the previous install.
+#   CURSOR_SKILLS_DIR=/custom/path ./unpack.sh
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 CONTENTS_DIR="${SCRIPT_DIR}/contents"
-PREVIEW_FILE="${SCRIPT_DIR}/preview.html"
+SKILLS_DIR="${CURSOR_SKILLS_DIR:-${HOME}/.cursor/skills}"
+TARGET_DIR="${SKILLS_DIR}/web-design"
+LEGACY_DIR="${SKILLS_DIR}/Daniels-web-design"
 
-CURSOR_SKILLS_DIR="${CURSOR_SKILLS_DIR:-${HOME}/.cursor/skills}"
-PRIMARY_TARGET_DIR="${CURSOR_SKILLS_DIR}/web-design"
-ALIAS_TARGET_DIR="${CURSOR_SKILLS_DIR}/Daniels-web-design"
-
-echo "===================================================="
-echo "  Installing /web-design skill into Cursor AI"
-echo "===================================================="
-
-if [ ! -d "${CONTENTS_DIR}" ]; then
-  echo "Error: 'contents/' directory not found at ${CONTENTS_DIR}" >&2
+if [ ! -f "${CONTENTS_DIR}/SKILL.md" ]; then
+  echo "Error: ${CONTENTS_DIR}/SKILL.md not found" >&2
   exit 1
 fi
 
-mkdir -p "${CURSOR_SKILLS_DIR}"
+mkdir -p "${SKILLS_DIR}"
 
-install_skill_to() {
-  local dest="$1"
-  if [ -d "${dest}" ] || [ -L "${dest}" ]; then
-    echo "--> Removing existing skill installation at ${dest}..."
-    rm -rf "${dest}"
-  fi
-
-  echo "--> Unpacking skill contents into ${dest}..."
-  mkdir -p "${dest}"
-
-  # Copy contents while excluding heavy local build caches (node_modules, .next, screenshots)
-  (
-    cd "${CONTENTS_DIR}"
-    tar -cf - \
-      --exclude='./05-golden-examples/app/node_modules' \
-      --exclude='./05-golden-examples/app/.next' \
-      --exclude='./05-golden-examples/app/screenshots' \
-      .
-  ) | (
-    cd "${dest}"
-    tar -xf -
-  )
-
-  # Ensure top-level skill metadata and preview.html are always present at the skill root
-  for top_file in SKILL.md README.md references.md preview.html; do
-    if [ -f "${SCRIPT_DIR}/${top_file}" ]; then
-      cp "${SCRIPT_DIR}/${top_file}" "${dest}/${top_file}"
-    fi
-  done
-}
-
-install_skill_to "${PRIMARY_TARGET_DIR}"
-install_skill_to "${ALIAS_TARGET_DIR}"
-
-if [ ! -f "${PRIMARY_TARGET_DIR}/SKILL.md" ]; then
-  echo "Error: SKILL.md missing in ${PRIMARY_TARGET_DIR}" >&2
-  exit 1
+# Older versions installed a second copy under Daniels-web-design; two copies show agents the skill twice.
+if [ -d "${LEGACY_DIR}" ] && grep -q '^name: web-design' "${LEGACY_DIR}/SKILL.md" 2>/dev/null; then
+  echo "--> Removing legacy duplicate install at ${LEGACY_DIR}"
+  rm -rf "${LEGACY_DIR}"
 fi
 
-echo ""
-echo "Successfully installed /web-design skill to:"
-echo "  - ${PRIMARY_TARGET_DIR}"
-echo "  - ${ALIAS_TARGET_DIR}"
-echo ""
-echo "Installed skill structure (${PRIMARY_TARGET_DIR}):"
-ls -la "${PRIMARY_TARGET_DIR}"
-echo ""
-echo "Done! Cursor can now load and use /web-design on this machine (no password required)."
-echo "===================================================="
+if [ -e "${TARGET_DIR}" ]; then
+  echo "--> Replacing existing install at ${TARGET_DIR}"
+  rm -rf "${TARGET_DIR}"
+fi
+mkdir -p "${TARGET_DIR}"
+
+# Copy the skill, skipping local build output and generated app tokens (npm install regenerates them).
+(
+  cd "${CONTENTS_DIR}"
+  tar -cf - \
+    --exclude='./05-golden-examples/app/node_modules' \
+    --exclude='./05-golden-examples/app/.next' \
+    --exclude='./05-golden-examples/app/shots' \
+    --exclude='./05-golden-examples/app/screenshots' \
+    --exclude='./05-golden-examples/app/src/design' \
+    --exclude='./05-golden-examples/app/next-env.d.ts' \
+    --exclude='*.tsbuildinfo' \
+    .
+) | (cd "${TARGET_DIR}" && tar -xf -)
+
+echo "Installed /web-design to ${TARGET_DIR}"
